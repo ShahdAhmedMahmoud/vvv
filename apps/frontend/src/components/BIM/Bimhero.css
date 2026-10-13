@@ -1,0 +1,91 @@
+.bim-hero {
+  --bim-indigo: #2A317A;
+  --bim-charcoal: #3C3C3B;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+  padding: clamp(132px, 15vw, 196px) 28px 76px;
+}
+.bim-hero::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(42,49,122,.2), transparent);
+}
+.bim-hero__inner { max-width: 1320px; margin: 0 auto; }
+.bim-hero__intro { max-width: 850px; margin: 0 auto; text-align: center; }
+.bim-hero__eyebrow { display: inline-flex; align-items: center; gap: 10px; margin: 0; color: var(--bim-indigo); font: 600 11px/1.4 var(--font-body, sans-serif); letter-spacing: .2em; text-transform: uppercase; }
+.bim-hero__eyebrow span { width: 23px; height: 1px; background: var(--bim-indigo); }
+.bim-hero h1 { margin: 22px 0 0; color: #000; font: 500 clamp(42px, 6vw, 76px)/1.04 var(--font-display, sans-serif); letter-spacing: -.055em; }
+.bim-hero h1 em { color: var(--bim-indigo); font-style: normal; }
+.bim-hero__lede { max-width: 570px; margin: 20px auto 0; color: var(--bim-charcoal); font: 400 16px/1.75 var(--font-body, sans-serif); }
+.bim-timeline-wrap { margin-top: clamp(58px, 8vw, 100px); }
+.bim-timeline-heading { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid rgba(60,60,59,.14); color: var(--bim-charcoal); font: 600 10px/1.4 var(--font-body, sans-serif); letter-spacing: .15em; text-transform: uppercase; }
+.bim-timeline-heading__count { color: var(--bim-indigo); font: 500 13px/1 var(--font-body, sans-serif); letter-spacing: .08em; }
+.bim-timeline-heading__count i { color: rgba(60,60,59,.52); font-style: normal; }
+.bim-timeline-scroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: rgba(42,49,122,.35) transparent; }
+.bim-timeline { position: relative; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); min-width: 910px; margin: 0; padding: 0; list-style: none; }
+.bim-timeline::before { position: absolute; top: 35px; right: 5%; left: 5%; height: 1px; content: ""; background: rgba(60,60,59,.24); }
+.bim-timeline::after { position: absolute; z-index: 0; top: 35px; right: 5%; left: 5%; height: 1px; content: ""; background: var(--bim-indigo); transform: scaleX(var(--line-progress, 0)); transform-origin: left; transition: transform .36s ease; }
+.bim-timeline:has(.is-active:nth-child(2)) { --line-progress: .16; }
+.bim-timeline:has(.is-active:nth-child(3)) { --line-progress: .33; }
+.bim-timeline:has(.is-active:nth-child(4)) { --line-progress: .5; }
+.bim-timeline:has(.is-active:nth-child(5)) { --line-progress: .66; }
+.bim-timeline:has(.is-active:nth-child(6)) { --line-progress: .83; }
+.bim-timeline:has(.is-active:nth-child(7)) { --line-progress: 1; }
+.bim-timeline__item { position: relative; z-index: 1; min-width: 0; }
+.bim-phase { display: flex; width: 100%; min-height: 145px; flex-direction: column; align-items: flex-start; padding: 21px 11px 8px; border: 0; background: transparent; color: inherit; text-align: start; cursor: pointer; }
+.bim-phase:focus-visible { outline: 2px solid var(--bim-indigo); outline-offset: -2px; }
+.bim-phase__top { display: flex; width: 100%; align-items: center; justify-content: space-between; }
+.bim-phase__number { color: var(--bim-charcoal); font: 500 11px/1 var(--font-body, sans-serif); letter-spacing: .08em; transition: color .2s ease; }
+.bim-phase__node { position: relative; display: block; width: 29px; height: 29px; flex: 0 0 29px; border: 1px solid rgba(60,60,59,.42); border-radius: 50%; background: #fff; transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+.bim-phase__node::after { position: absolute; inset: 8px; border-radius: 50%; background: transparent; content: ""; transition: background .25s ease, inset .25s ease; }
+.bim-phase__label { max-width: 145px; margin-top: 17px; color: var(--bim-charcoal); font: 600 13px/1.4 var(--font-body, sans-serif); transition: color .2s ease; }
+.bim-phase__detail { margin-top: 5px; color: rgba(60,60,59,.65); font: 500 10px/1.2 var(--font-body, sans-serif); letter-spacing: .08em; }
+.bim-timeline__item.is-active .bim-phase__number, .bim-timeline__item.is-active .bim-phase__label { color: var(--bim-indigo); }
+.bim-timeline__item.is-active .bim-phase__node { border-color: var(--bim-indigo); background: #fff; transform: scale(1.08); }
+.bim-timeline__item.is-active .bim-phase__node::after { inset: 6px; background: var(--bim-indigo); }
+.bim-timeline-hint { display: none; margin: 8px 0 0; color: rgba(60,60,59,.65); font: 400 11px/1.5 var(--font-body, sans-serif); }
+.bim-results { display: grid; grid-template-columns: minmax(240px, .75fr) minmax(0, 1.6fr); align-items: center; gap: 32px; min-height: 128px; margin-top: 20px; padding: 24px 28px; border: 1px solid rgba(60,60,59,.14); background: #fff; transition: border-color .25s ease, min-height .25s ease; }
+.bim-results.is-revealed { border-color: rgba(42,49,122,.3); }
+.bim-results__label { display: flex; align-items: flex-start; gap: 15px; }
+.bim-results__index { color: var(--bim-indigo); font: 500 12px/1.5 var(--font-body, sans-serif); letter-spacing: .08em; }
+.bim-results__label p { margin: 0 0 5px; color: rgba(60,60,59,.68); font: 600 9px/1.4 var(--font-body, sans-serif); letter-spacing: .14em; text-transform: uppercase; }
+.bim-results__label h2 { margin: 0; color: var(--bim-charcoal); font: 600 16px/1.4 var(--font-body, sans-serif); }
+.bim-results__prompt { display: flex; align-items: center; gap: 14px; color: var(--bim-indigo); font: 500 12px/1.4 var(--font-body, sans-serif); }
+.bim-results__rule { width: 34px; height: 1px; background: rgba(42,49,122,.48); }
+.bim-results__prompt svg { margin-inline-start: auto; }
+.bim-empty { display: flex; flex-direction: column; gap: 5px; color: var(--bim-charcoal); font: 500 12px/1.6 var(--font-body, sans-serif); }
+.bim-empty span { color: rgba(60,60,59,.7); font-size: 11px; }
+.bim-projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.bim-project { display: grid; grid-template-columns: 78px minmax(0,1fr) 24px; align-items: center; gap: 12px; min-width: 0; padding: 8px; border: 1px solid rgba(60,60,59,.12); color: inherit; text-decoration: none; transition: border-color .2s ease, transform .2s ease; }
+.bim-project:hover { border-color: var(--bim-indigo); transform: translateY(-2px); }
+.bim-project:focus-visible { outline: 2px solid var(--bim-indigo); outline-offset: 2px; }
+.bim-project img { display: block; width: 78px; height: 58px; object-fit: cover; }
+.bim-project__copy { display: flex; min-width: 0; flex-direction: column; gap: 5px; }
+.bim-project__copy strong { overflow: hidden; color: #000; font: 600 11px/1.35 var(--font-body, sans-serif); text-overflow: ellipsis; }
+.bim-project__copy small { overflow: hidden; color: var(--bim-charcoal); font: 400 10px/1.35 var(--font-body, sans-serif); text-overflow: ellipsis; white-space: nowrap; }
+.bim-project__arrow { color: var(--bim-indigo); }
+[dir="rtl"] .bim-timeline::after { transform-origin: right; }
+@media (max-width: 1100px) {
+  .bim-timeline { min-width: 980px; }
+  .bim-timeline-hint { display: flex; align-items: center; gap: 8px; }
+}
+@media (max-width: 700px) {
+  .bim-hero { padding: 116px 20px 54px; }
+  .bim-hero__intro { text-align: start; }
+  .bim-hero h1 { margin-top: 18px; font-size: clamp(40px, 11vw, 58px); }
+  .bim-hero__lede { margin-inline: 0; font-size: 14px; }
+  .bim-timeline-wrap { margin-top: 53px; }
+  .bim-timeline { min-width: 1050px; }
+  .bim-phase { min-height: 137px; padding-inline: 9px; }
+  .bim-phase__label { max-width: 126px; font-size: 12px; }
+  .bim-results { grid-template-columns: 1fr; gap: 20px; padding: 20px; }
+  .bim-results__label h2 { font-size: 15px; }
+  .bim-projects { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bim-timeline::after, .bim-phase__number, .bim-phase__label, .bim-phase__node, .bim-phase__node::after, .bim-results, .bim-project { transition: none; }
+}

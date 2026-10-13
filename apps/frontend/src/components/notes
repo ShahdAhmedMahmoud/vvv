@@ -1,0 +1,2229 @@
+
+
+// // import { useEffect, useRef, useState } from "react";
+// // import { motion } from "motion/react";
+// // import {
+// //   ClipboardList,
+// //   HardHat,
+// //   Layers,
+// //   Building2,
+// //   Cable,
+// //   Paintbrush,
+// //   Sparkles,
+// //   CheckCircle2,
+// //   Plus,
+// // } from "lucide-react";
+
+// // const PHASES = [
+// //   { title: "Project Start", tag: "START", icon: ClipboardList },
+// //   { title: "Site Preparation", tag: "PREP", icon: HardHat },
+// //   { title: "Foundation", tag: "FOUND", icon: Layers },
+// //   { title: "Structural Work", tag: "STRUCT", icon: Building2 },
+// //   { title: "MEP Installation", tag: "MEP", icon: Cable },
+// //   { title: "Interior & Exterior", tag: "FINISH", icon: Paintbrush },
+// //   { title: "Final Finishing", tag: "DETAIL", icon: Sparkles },
+// //   { title: "Project Completed", tag: "DONE", icon: CheckCircle2 },
+// // ];
+
+// // const GROUPS = [
+// //   { title: "Pre-Construction", phases: [0, 1] },
+// //   { title: "Core Construction", phases: [2, 3, 4] },
+// //   { title: "Finishing & Delivery", phases: [5, 6, 7] },
+// // ];
+
+// // const STEP_DELAY = 900;
+// // const HOLD_AFTER_COMPLETE = 2600;
+
+// // export default function ProjectHierarchy({ project }) {
+// //   const sectionRef = useRef(null);
+// //   const [isInView, setIsInView] = useState(false);
+// //   const [revealed, setRevealed] = useState(new Set());
+
+// //   const targetIndex =
+// //     typeof project.currentPhase === "number"
+// //       ? project.currentPhase
+// //       : project.status?.toLowerCase() === "finished"
+// //       ? PHASES.length - 1
+// //       : Math.floor(PHASES.length / 2);
+
+// //   const getImage = (phaseIndex) =>
+// //     project.phaseGallery?.[phaseIndex] ||
+// //     project.gallery?.[phaseIndex % (project.gallery.length || 1)] ||
+// //     project.src;
+
+// //   // بناء تسلسل الظهور: جذر -> (اسم المجموعة -> كل مراحلها) -> ...
+// //   const sequence = ["root"];
+// //   GROUPS.forEach((g, gi) => {
+// //     sequence.push(`group-${gi}`);
+// //     g.phases.forEach((pi) => {
+// //       if (pi <= targetIndex) sequence.push(`leaf-${pi}`);
+// //     });
+// //   });
+
+// //   useEffect(() => {
+// //     const el = sectionRef.current;
+// //     if (!el) return;
+// //     const observer = new IntersectionObserver(
+// //       ([entry]) => setIsInView(entry.isIntersecting),
+// //       { threshold: 0.25 }
+// //     );
+// //     observer.observe(el);
+// //     return () => observer.disconnect();
+// //   }, []);
+
+// //   useEffect(() => {
+// //     if (!isInView) return;
+// //     let cancelled = false;
+
+// //     function run() {
+// //       let i = 0;
+// //       const acc = new Set();
+
+// //       function step() {
+// //         if (cancelled) return;
+// //         if (i >= sequence.length) {
+// //           setTimeout(() => {
+// //             if (cancelled) return;
+// //             setRevealed(new Set());
+// //             setTimeout(run, 500);
+// //           }, HOLD_AFTER_COMPLETE);
+// //           return;
+// //         }
+// //         acc.add(sequence[i]);
+// //         setRevealed(new Set(acc));
+// //         i += 1;
+// //         setTimeout(step, STEP_DELAY);
+// //       }
+// //       step();
+// //     }
+
+// //     run();
+// //     return () => {
+// //       cancelled = true;
+// //     };
+// //   }, [isInView]);
+
+// //   // إحداثيات % - desktop: جذر يسار، مجموعات نص، أوراق يمين
+// //   // mobile: نفس الفكرة بس بتتلف عمودي (جذر فوق، أوراق تحت)
+// //   const leafPos = (phaseIndex, isMobile) => {
+// //     const t = phaseIndex / (PHASES.length - 1);
+// //     const along = 10 + t * 80; // من 10% لـ 90%
+// //     return isMobile ? { x: along, y: 88 } : { x: 88, y: along };
+// //   };
+
+// //   const groupPos = (groupIndex, isMobile) => {
+// //     const g = GROUPS[groupIndex];
+// //     const ys = g.phases.map((pi) => leafPos(pi, isMobile)[isMobile ? "x" : "y"]);
+// //     const avg = ys.reduce((a, b) => a + b, 0) / ys.length;
+// //     return isMobile ? { x: avg, y: 48 } : { x: 45, y: avg };
+// //   };
+
+// //   const rootPos = (isMobile) => (isMobile ? { x: 50, y: 8 } : { x: 8, y: 50 });
+
+// //   const renderTree = (isMobile) => {
+// //     const root = rootPos(isMobile);
+
+// //     return (
+// //       <div className={`relative w-full ${isMobile ? "h-[880px] block md:hidden" : "h-[560px] hidden md:block"}`}>
+// //         {/* خطوط SVG */}
+// //         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+// //           {GROUPS.map((g, gi) => {
+// //             const gp = groupPos(gi, isMobile);
+// //             const isRootLineOn = revealed.has(`group-${gi}`);
+// //             return (
+// //               <motion.path
+// //                 key={`root-line-${gi}`}
+// //                 d={`M ${root.x} ${root.y} Q ${(root.x + gp.x) / 2} ${root.y} ${gp.x} ${gp.y}`}
+// //                 fill="none"
+// //                 stroke="#FFBF00"
+// //                 strokeWidth={0.3}
+// //                 strokeLinecap="round"
+// //                 initial={{ pathLength: 0 }}
+// //                 animate={{ pathLength: isRootLineOn ? 1 : 0 }}
+// //                 transition={{ duration: 0.7, ease: "easeInOut" }}
+// //               />
+// //             );
+// //           })}
+
+// //           {GROUPS.map((g, gi) =>
+// //             g.phases.map((pi) => {
+// //               const gp = groupPos(gi, isMobile);
+// //               const lp = leafPos(pi, isMobile);
+// //               const isLeafLineOn = revealed.has(`leaf-${pi}`);
+// //               return (
+// //                 <motion.path
+// //                   key={`leaf-line-${pi}`}
+// //                   d={`M ${gp.x} ${gp.y} Q ${(gp.x + lp.x) / 2} ${gp.y} ${lp.x} ${lp.y}`}
+// //                   fill="none"
+// //                   stroke="#293A82"
+// //                   strokeWidth={0.3}
+// //                   strokeLinecap="round"
+// //                   initial={{ pathLength: 0 }}
+// //                   animate={{ pathLength: isLeafLineOn ? 1 : 0 }}
+// //                   transition={{ duration: 0.5, ease: "easeInOut" }}
+// //                 />
+// //               );
+// //             })
+// //           )}
+// //         </svg>
+
+// //         {/* عقدة الجذر */}
+// //         <motion.div
+// //           initial={{ opacity: 0, scale: 0.7 }}
+// //           animate={revealed.has("root") ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
+// //           transition={{ duration: 0.5 }}
+// //           className="absolute z-20 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
+// //           style={{ left: `${root.x}%`, top: `${root.y}%` }}
+// //         >
+// //           <div className="relative h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-[#FFBF00] shadow-lg">
+// //             <img src={project.src} alt={project.title} className="h-full w-full object-cover" />
+// //           </div>
+// //           <span className="mt-2 rounded-full bg-[#293A82] px-2.5 py-0.5 text-[9px] font-semibold uppercase text-white whitespace-nowrap">
+// //             Project Start
+// //           </span>
+// //         </motion.div>
+
+// //         {/* عُقد المجموعات */}
+// //         {GROUPS.map((g, gi) => {
+// //           const gp = groupPos(gi, isMobile);
+// //           const isOn = revealed.has(`group-${gi}`);
+// //           return (
+// //             <motion.div
+// //               key={`group-${gi}`}
+// //               initial={{ opacity: 0, scale: 0.7 }}
+// //               animate={isOn ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
+// //               transition={{ duration: 0.5 }}
+// //               className="absolute z-20 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1.5"
+// //               style={{ left: `${gp.x}%`, top: `${gp.y}%` }}
+// //             >
+// //               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1E2432] border border-[#FFBF00]/50 text-[#FFBF00]">
+// //                 <Plus className="h-4 w-4" />
+// //               </span>
+// //               <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-[9px] font-semibold uppercase text-white/80 whitespace-nowrap backdrop-blur-sm">
+// //                 {g.title}
+// //               </span>
+// //             </motion.div>
+// //           );
+// //         })}
+
+// //         {/* كروت المراحل (الأوراق) */}
+// //         {PHASES.map((phase, index) => {
+// //           const lp = leafPos(index, isMobile);
+// //           const isOn = revealed.has(`leaf-${index}`);
+// //           const Icon = phase.icon;
+// //           const progress = Math.round(((index + 1) / PHASES.length) * 100);
+// //           const status = index < targetIndex ? "Completed" : index === targetIndex ? "In Progress" : "Pending";
+
+// //           return (
+// //             <motion.div
+// //               key={`leaf-${index}`}
+// //               initial={{ opacity: 0, scale: 0.85, y: 10 }}
+// //               animate={isOn ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.85, y: 10 }}
+// //               transition={{ duration: 0.45, ease: "easeOut" }}
+// //               className="absolute z-30 w-32 sm:w-40 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl border border-white/10 bg-[#1E2432] shadow-xl"
+// //               style={{ left: `${lp.x}%`, top: `${lp.y}%` }}
+// //             >
+// //               <div className="relative h-16 sm:h-20 w-full">
+// //                 <img src={getImage(index)} alt={phase.title} className="h-full w-full object-cover" />
+// //                 <span className="absolute top-1.5 left-1.5 rounded-full bg-black/60 px-2 py-0.5 text-[8px] font-semibold text-[#FFBF00] backdrop-blur-sm">
+// //                   PHASE {String(index + 1).padStart(2, "0")}
+// //                 </span>
+// //                 <span className="absolute top-1.5 right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#FFBF00]">
+// //                   <Icon className="h-2.5 w-2.5 text-[#1E2432]" />
+// //                 </span>
+// //               </div>
+
+// //               <div className="p-2 sm:p-2.5">
+// //                 <h4 className="text-[10px] sm:text-xs font-bold text-white leading-tight mb-1.5 truncate">
+// //                   {phase.title}
+// //                 </h4>
+// //                 <div className="flex items-center justify-between text-[8px] sm:text-[9px]">
+// //                   <span className="text-white/50">{progress}% Progress</span>
+// //                   <span
+// //                     className={`rounded-full px-1.5 py-0.5 font-semibold ${
+// //                       status === "Completed"
+// //                         ? "bg-[#FFBF00]/15 text-[#FFBF00]"
+// //                         : status === "In Progress"
+// //                         ? "bg-[#293A82]/50 text-white"
+// //                         : "bg-white/5 text-white/30"
+// //                     }`}
+// //                   >
+// //                     {phase.tag}
+// //                   </span>
+// //                 </div>
+// //               </div>
+// //             </motion.div>
+// //           );
+// //         })}
+// //       </div>
+// //     );
+// //   };
+
+// //   return (
+// //     <section ref={sectionRef} className="relative w-full overflow-hidden bg-[#1E2432] py-16 sm:py-24 px-4 sm:px-6">
+// //       <div
+// //         className="pointer-events-none absolute inset-0 opacity-[0.04]"
+// //         style={{
+// //           backgroundImage:
+// //             "linear-gradient(#F8F9FD 1px, transparent 1px), linear-gradient(90deg, #F8F9FD 1px, transparent 1px)",
+// //           backgroundSize: "40px 40px",
+// //         }}
+// //       />
+
+// //       <div className="relative mx-auto max-w-6xl">
+// //         <motion.div
+// //           initial={{ opacity: 0, y: 20 }}
+// //           whileInView={{ opacity: 1, y: 0 }}
+// //           viewport={{ once: true }}
+// //           transition={{ duration: 0.6 }}
+// //           className="text-center mb-10 sm:mb-14"
+// //         >
+// //           <span className="text-[#FFBF00] font-semibold tracking-[0.25em] text-[11px] sm:text-xs uppercase">
+// //             The Construction Journey
+// //           </span>
+// //           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3">
+// //             From Ground To Completion
+// //           </h2>
+// //         </motion.div>
+
+// //         {renderTree(false)}
+// //         {renderTree(true)}
+// //       </div>
+// //     </section>
+// //   );
+// // }
+
+
+
+
+// // import { useEffect, useLayoutEffect, useRef, useState } from "react";
+// // import { motion } from "motion/react";
+// // import {
+// //   ClipboardList,
+// //   HardHat,
+// //   Layers,
+// //   Building2,
+// //   Cable,
+// //   Paintbrush,
+// //   Sparkles,
+// //   CheckCircle2,
+// //   Plus,
+// // } from "lucide-react";
+// // import KineticGrid from "../KineticGrid/KineticGrid";
+
+// // const PHASES = [
+// //   { title: "Project Start", tag: "START", icon: ClipboardList },
+// //   { title: "Site Preparation", tag: "PREP", icon: HardHat },
+// //   { title: "Foundation", tag: "FOUND", icon: Layers },
+// //   { title: "Structural Work", tag: "STRUCT", icon: Building2 },
+// //   { title: "MEP Installation", tag: "MEP", icon: Cable },
+// //   { title: "Interior & Exterior", tag: "FINISH", icon: Paintbrush },
+// //   { title: "Final Finishing", tag: "DETAIL", icon: Sparkles },
+// //   { title: "Project Completed", tag: "DONE", icon: CheckCircle2 },
+// // ];
+
+// // const GROUPS = [
+// //   { title: "Pre-Construction", phases: [0, 1] },
+// //   { title: "Core Construction", phases: [2, 3, 4] },
+// //   { title: "Finishing & Delivery", phases: [5, 6, 7] },
+// // ];
+
+// // const STEP_DELAY = 900;
+// // const HOLD_AFTER_COMPLETE = 2600;
+
+
+// // const LINE_IDLE = "rgba(248,249,253,0.18)";
+// // const LINE_ROOT_ACTIVE = "#FFBF00";
+// // const LINE_LEAF_ACTIVE = "rgba(248,249,253,0.65)";
+
+// // function PhaseCard({ phase, index, image, progress, status, isOn }) {
+// //   const Icon = phase.icon;
+// //   return (
+// //     <motion.div
+// //       initial={{ opacity: 0, scale: 0.85, y: 10 }}
+// //       animate={isOn ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.85, y: 10 }}
+// //       transition={{ duration: 0.45, ease: "easeOut" }}
+// //       className="w-48 sm:w-56 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-[#1E2432] shadow-xl"
+// //     >
+// //       <div className="relative h-28 sm:h-32 w-full">
+// //         <img src={image} alt={phase.title} className="h-full w-full object-cover" />
+// //         <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-[9px] font-semibold text-[#FFBF00] backdrop-blur-sm">
+// //           PHASE {String(index + 1).padStart(2, "0")}
+// //         </span>
+// //         <span className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#FFBF00]">
+// //           <Icon className="h-3 w-3 text-[#1E2432]" />
+// //         </span>
+// //       </div>
+
+// //       <div className="p-3">
+// //         <h4 className="text-xs sm:text-sm font-bold text-white leading-tight mb-2 truncate">
+// //           {phase.title}
+// //         </h4>
+// //         <div className="flex items-center justify-between text-[9px] sm:text-[10px] mb-2">
+// //           <span className="text-white/50">{progress}% Progress</span>
+// //           <span
+// //             className={`rounded-full px-1.5 py-0.5 font-semibold ${
+// //               status === "Completed"
+// //                 ? "bg-[#FFBF00]/15 text-[#FFBF00]"
+// //                 : status === "In Progress"
+// //                 ? "bg-[#293A82]/50 text-white"
+// //                 : "bg-white/5 text-white/30"
+// //             }`}
+// //           >
+// //             {phase.tag}
+// //           </span>
+// //         </div>
+// //         <div className="h-1 w-full rounded-full bg-white/5 overflow-hidden">
+// //           <motion.div
+// //             initial={{ width: 0 }}
+// //             animate={{ width: isOn ? `${progress}%` : 0 }}
+// //             transition={{ duration: 0.6, ease: "easeOut" }}
+// //             className="h-full bg-[#FFBF00]"
+// //           />
+// //         </div>
+// //       </div>
+// //     </motion.div>
+// //   );
+// // }
+
+// // export default function ProjectHierarchy({ project }) {
+// //   const sectionRef = useRef(null);
+// //   const containerRef = useRef(null);
+// //   const rootRef = useRef(null);
+// //   const groupRefs = useRef([]);
+// //   const leafRefs = useRef([]);
+
+// //   const [isInView, setIsInView] = useState(false);
+// //   const [revealed, setRevealed] = useState(new Set());
+// //   const [points, setPoints] = useState({ root: null, groups: [], leaves: [] });
+
+// //   const targetIndex =
+// //     typeof project.currentPhase === "number"
+// //       ? project.currentPhase
+// //       : project.status?.toLowerCase() === "finished"
+// //       ? PHASES.length - 1
+// //       : Math.floor(PHASES.length / 2);
+
+// //   const getImage = (phaseIndex) =>
+// //     project.phaseGallery?.[phaseIndex] ||
+// //     (project.gallery && project.gallery.length
+// //       ? project.gallery[phaseIndex % project.gallery.length]
+// //       : project.src);
+
+// //   const sequence = ["root"];
+// //   GROUPS.forEach((g, gi) => {
+// //     sequence.push(`group-${gi}`);
+// //     g.phases.forEach((pi) => {
+// //       if (pi <= targetIndex) sequence.push(`leaf-${pi}`);
+// //     });
+// //   });
+
+// //   // مراقبة ظهور السكشن في الشاشة
+// //   useEffect(() => {
+// //     const el = sectionRef.current;
+// //     if (!el) return;
+// //     const observer = new IntersectionObserver(
+// //       ([entry]) => setIsInView(entry.isIntersecting),
+// //       { threshold: 0.25 }
+// //     );
+// //     observer.observe(el);
+// //     return () => observer.disconnect();
+// //   }, []);
+
+// //   // حساب مواقع العناصر الفعلية على الشاشة (لرسم الخطوط بينهم بدقة)
+// //   useLayoutEffect(() => {
+// //     const container = containerRef.current;
+// //     if (!container) return;
+
+// //     const measure = () => {
+// //       const cRect = container.getBoundingClientRect();
+// //       const relativeCenter = (el) => {
+// //         if (!el) return null;
+// //         const r = el.getBoundingClientRect();
+// //         return { x: r.left + r.width / 2 - cRect.left, y: r.top + r.height / 2 - cRect.top };
+// //       };
+// //       setPoints({
+// //         root: relativeCenter(rootRef.current),
+// //         groups: groupRefs.current.map(relativeCenter),
+// //         leaves: leafRefs.current.map(relativeCenter),
+// //       });
+// //     };
+
+// //     measure();
+// //     const ro = new ResizeObserver(measure);
+// //     ro.observe(container);
+// //     window.addEventListener("resize", measure);
+// //     return () => {
+// //       ro.disconnect();
+// //       window.removeEventListener("resize", measure);
+// //     };
+// //   }, []);
+
+// //   // تشغيل تسلسل الظهور تلقائيًا
+// //   useEffect(() => {
+// //     if (!isInView) return;
+// //     let cancelled = false;
+
+// //     function run() {
+// //       let i = 0;
+// //       const acc = new Set();
+
+// //       function step() {
+// //         if (cancelled) return;
+// //         if (i >= sequence.length) {
+// //           setTimeout(() => {
+// //             if (cancelled) return;
+// //             setRevealed(new Set());
+// //             setTimeout(run, 500);
+// //           }, HOLD_AFTER_COMPLETE);
+// //           return;
+// //         }
+// //         acc.add(sequence[i]);
+// //         setRevealed(new Set(acc));
+// //         i += 1;
+// //         setTimeout(step, STEP_DELAY);
+// //       }
+// //       step();
+// //     }
+
+// //     run();
+// //     return () => {
+// //       cancelled = true;
+// //     };
+// //     // eslint-disable-next-line react-hooks/exhaustive-deps
+// //   }, [isInView]);
+
+// //   const getStatus = (index) =>
+// //     index < targetIndex ? "Completed" : index === targetIndex ? "In Progress" : "Pending";
+
+// //   const curve = (p1, p2) =>
+// //     p1 && p2 ? `M ${p1.x} ${p1.y} Q ${(p1.x + p2.x) / 2} ${p1.y} ${p2.x} ${p2.y}` : "";
+
+// //   return (
+// //     <section ref={sectionRef} className="relative w-full py-16 sm:py-24 px-4 sm:px-6 bg-[#1E2432]">
+// //       <KineticGrid className="!h-auto rounded-2xl">
+// //         <div className="relative mx-auto max-w-6xl py-10 sm:py-14 px-4 sm:px-8">
+// //           <motion.div
+// //             initial={{ opacity: 0, y: 20 }}
+// //             whileInView={{ opacity: 1, y: 0 }}
+// //             viewport={{ once: true }}
+// //             transition={{ duration: 0.6 }}
+// //             className="text-center mb-12 sm:mb-16"
+// //           >
+// //             <span className="text-[#FFBF00] font-semibold tracking-[0.25em] text-[11px] sm:text-xs uppercase">
+// //               The Construction Journey
+// //             </span>
+// //             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3">
+// //               From Ground To Completion
+// //             </h2>
+// //           </motion.div>
+
+// //           {/* ============ Desktop: شجرة أفقية بخطوط SVG محسوبة ============ */}
+// //           <div ref={containerRef} className="relative hidden md:block">
+// //             <svg className="absolute inset-0 pointer-events-none" width="100%" height="100%">
+// //               {GROUPS.map((g, gi) => (
+// //                 <motion.path
+// //                   key={`rg-${gi}`}
+// //                   d={curve(points.root, points.groups[gi])}
+// //                   fill="none"
+// //                   stroke={revealed.has(`group-${gi}`) ? LINE_ROOT_ACTIVE : LINE_IDLE}
+// //                   strokeWidth={2}
+// //                   strokeLinecap="round"
+// //                   initial={{ pathLength: 0 }}
+// //                   animate={{ pathLength: revealed.has(`group-${gi}`) ? 1 : 0 }}
+// //                   transition={{ duration: 0.7, ease: "easeInOut" }}
+// //                 />
+// //               ))}
+// //               {GROUPS.map((g, gi) =>
+// //                 g.phases.map((pi) => (
+// //                   <motion.path
+// //                     key={`gl-${pi}`}
+// //                     d={curve(points.groups[gi], points.leaves[pi])}
+// //                     fill="none"
+// //                     stroke={revealed.has(`leaf-${pi}`) ? LINE_LEAF_ACTIVE : LINE_IDLE}
+// //                     strokeWidth={1.5}
+// //                     strokeLinecap="round"
+// //                     initial={{ pathLength: 0 }}
+// //                     animate={{ pathLength: revealed.has(`leaf-${pi}`) ? 1 : 0 }}
+// //                     transition={{ duration: 0.5, ease: "easeInOut" }}
+// //                   />
+// //                 ))
+// //               )}
+// //             </svg>
+
+// //             <div className="relative z-10 flex flex-row items-center gap-16 lg:gap-24">
+// //               {/* الجذر */}
+// //               <motion.div
+// //                 ref={rootRef}
+// //                 initial={{ opacity: 0, scale: 0.7 }}
+// //                 animate={revealed.has("root") ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
+// //                 transition={{ duration: 0.5 }}
+// //                 className="flex flex-col items-center gap-2 shrink-0"
+// //               >
+// //                 <div className="relative h-24 w-24 lg:h-28 lg:w-28 overflow-hidden rounded-full border-2 border-[#FFBF00] shadow-lg">
+// //                   <img src={project.src} alt={project.title} className="h-full w-full object-cover" />
+// //                 </div>
+// //                 <span className="rounded-full bg-[#293A82] px-3 py-1 text-[10px] font-semibold uppercase text-white whitespace-nowrap">
+// //                   Project Start
+// //                 </span>
+// //               </motion.div>
+
+// //               {/* المجموعات + كروتها */}
+// //               <div className="flex flex-col gap-14">
+// //                 {GROUPS.map((g, gi) => (
+// //                   <div key={gi} className="flex flex-row items-center gap-10">
+// //                     <motion.div
+// //                       ref={(el) => (groupRefs.current[gi] = el)}
+// //                       initial={{ opacity: 0, scale: 0.7 }}
+// //                       animate={
+// //                         revealed.has(`group-${gi}`) ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }
+// //                       }
+// //                       transition={{ duration: 0.5 }}
+// //                       className="flex flex-col items-center gap-2 shrink-0"
+// //                     >
+// //                       <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1E2432] border border-[#FFBF00]/50 text-[#FFBF00]">
+// //                         <Plus className="h-4 w-4" />
+// //                       </span>
+// //                       <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase text-white/80 whitespace-nowrap backdrop-blur-sm">
+// //                         {g.title}
+// //                       </span>
+// //                     </motion.div>
+
+// //                     <div className="flex flex-col gap-4">
+// //                       {g.phases.map((pi) => (
+// //                         <div key={pi} ref={(el) => (leafRefs.current[pi] = el)}>
+// //                           <PhaseCard
+// //                             phase={PHASES[pi]}
+// //                             index={pi}
+// //                             image={getImage(pi)}
+// //                             progress={Math.round(((pi + 1) / PHASES.length) * 100)}
+// //                             status={getStatus(pi)}
+// //                             isOn={revealed.has(`leaf-${pi}`)}
+// //                           />
+// //                         </div>
+// //                       ))}
+// //                     </div>
+// //                   </div>
+// //                 ))}
+// //               </div>
+// //             </div>
+// //           </div>
+
+// //           {/* ============ Mobile: شجرة عمودية بسيطة (بدون SVG) ============ */}
+// //           <div className="flex md:hidden flex-col items-center">
+// //             <motion.div
+// //               initial={{ opacity: 0, scale: 0.7 }}
+// //               animate={revealed.has("root") ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
+// //               transition={{ duration: 0.5 }}
+// //               className="flex flex-col items-center gap-2"
+// //             >
+// //               <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-[#FFBF00] shadow-lg">
+// //                 <img src={project.src} alt={project.title} className="h-full w-full object-cover" />
+// //               </div>
+// //               <span className="rounded-full bg-[#293A82] px-3 py-1 text-[10px] font-semibold uppercase text-white whitespace-nowrap">
+// //                 Project Start
+// //               </span>
+// //             </motion.div>
+
+// //             {GROUPS.map((g, gi) => (
+// //               <div key={gi} className="flex flex-col items-center w-full">
+// //                 <div
+// //                   className="w-px h-8 transition-colors duration-500"
+// //                   style={{ backgroundColor: revealed.has(`group-${gi}`) ? LINE_ROOT_ACTIVE : LINE_IDLE }}
+// //                 />
+
+// //                 <motion.div
+// //                   initial={{ opacity: 0, scale: 0.7 }}
+// //                   animate={
+// //                     revealed.has(`group-${gi}`) ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }
+// //                   }
+// //                   transition={{ duration: 0.5 }}
+// //                   className="flex flex-col items-center gap-2"
+// //                 >
+// //                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1E2432] border border-[#FFBF00]/50 text-[#FFBF00]">
+// //                     <Plus className="h-4 w-4" />
+// //                   </span>
+// //                   <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase text-white/80 whitespace-nowrap backdrop-blur-sm">
+// //                     {g.title}
+// //                   </span>
+// //                 </motion.div>
+
+// //                 <div className="flex flex-col items-center gap-6 mt-6">
+// //                   {g.phases.map((pi) => (
+// //                     <div key={pi} className="flex flex-col items-center">
+// //                       <div
+// //                         className="w-px h-6 transition-colors duration-500"
+// //                         style={{ backgroundColor: revealed.has(`leaf-${pi}`) ? LINE_LEAF_ACTIVE : LINE_IDLE }}
+// //                       />
+// //                       <PhaseCard
+// //                         phase={PHASES[pi]}
+// //                         index={pi}
+// //                         image={getImage(pi)}
+// //                         progress={Math.round(((pi + 1) / PHASES.length) * 100)}
+// //                         status={getStatus(pi)}
+// //                         isOn={revealed.has(`leaf-${pi}`)}
+// //                       />
+// //                     </div>
+// //                   ))}
+// //                 </div>
+// //               </div>
+// //             ))}
+// //           </div>
+// //         </div>
+// //       </KineticGrid>
+// //     </section>
+// //   );
+// // }
+
+
+
+
+
+
+
+
+
+
+
+
+// import { useEffect, useMemo, useRef, useState } from "react";
+// import { AnimatePresence, motion } from "motion/react";
+// import {
+//   ClipboardList,
+//   HardHat,
+//   Layers,
+//   Building2,
+//   Cable,
+//   Paintbrush,
+//   Sparkles,
+//   CheckCircle2,
+//   Plus,
+//   ArrowRight,
+// } from "lucide-react";
+// import KineticGrid from "../KineticGrid/KineticGrid";
+
+// /* =========================================================
+//    PHASES
+// ========================================================= */
+
+// const PHASES = [
+//   {
+//     title: "Project Start",
+//     tag: "START",
+//     icon: ClipboardList,
+//   },
+//   {
+//     title: "Site Preparation",
+//     tag: "PREP",
+//     icon: HardHat,
+//   },
+//   {
+//     title: "Foundation",
+//     tag: "FOUND",
+//     icon: Layers,
+//   },
+//   {
+//     title: "Structural Work",
+//     tag: "STRUCT",
+//     icon: Building2,
+//   },
+//   {
+//     title: "MEP Installation",
+//     tag: "MEP",
+//     icon: Cable,
+//   },
+//   {
+//     title: "Interior & Exterior",
+//     tag: "FINISH",
+//     icon: Paintbrush,
+//   },
+//   {
+//     title: "Final Finishing",
+//     tag: "DETAIL",
+//     icon: Sparkles,
+//   },
+//   {
+//     title: "Project Completed",
+//     tag: "DONE",
+//     icon: CheckCircle2,
+//   },
+// ];
+
+// /* =========================================================
+//    TREE GROUPS
+//    Project Start is NOT part of a group anymore.
+// ========================================================= */
+
+// const GROUPS = [
+//   {
+//     title: "Pre-Construction",
+//     phases: [1, 2],
+//   },
+//   {
+//     title: "Core Construction",
+//     phases: [3, 4, 5],
+//   },
+//   {
+//     title: "Finishing & Delivery",
+//     phases: [6, 7],
+//   },
+// ];
+
+// /* =========================================================
+//    COLORS
+// ========================================================= */
+
+// const GOLD = "#FFBF00";
+// const NAVY = "#293A82";
+// const BG = "#1E2432";
+
+// const LINE_IDLE = "rgba(248,249,253,0.12)";
+// const LINE_ACTIVE = "rgba(248,249,253,0.60)";
+
+// /* =========================================================
+//    TIMING
+// ========================================================= */
+
+// const ROOT_DURATION = 1400;
+// const GROUP_DURATION = 1300;
+// const PHASE_HOLD = 2600;
+// const GROUP_EXIT_DURATION = 750;
+// const RESTART_DELAY = 900;
+
+// /* =========================================================
+//    DESKTOP POSITIONS
+// ========================================================= */
+
+// const ROOT_POSITION = {
+//   x: 8,
+//   y: 50,
+// };
+
+// const GROUP_POSITIONS = [
+//   { x: 33, y: 22 },
+//   { x: 33, y: 50 },
+//   { x: 33, y: 78 },
+// ];
+
+// const PHASE_X = 76;
+
+// /*
+//   Dynamic vertical positions for the phase cards.
+//   This prevents cards from sitting on top of each other.
+// */
+// function getPhasePositions(count) {
+//   if (count === 1) {
+//     return [{ x: PHASE_X, y: 50 }];
+//   }
+
+//   if (count === 2) {
+//     return [
+//       { x: PHASE_X, y: 32 },
+//       { x: PHASE_X, y: 68 },
+//     ];
+//   }
+
+//   return [
+//     { x: PHASE_X, y: 18 },
+//     { x: PHASE_X, y: 50 },
+//     { x: PHASE_X, y: 82 },
+//   ];
+// }
+
+// /* =========================================================
+//    PHASE CARD
+// ========================================================= */
+
+// function PhaseCard({
+//   phase,
+//   index,
+//   image,
+//   progress,
+//   status,
+// }) {
+//   const Icon = phase.icon;
+
+//   return (
+//     <motion.div
+//       initial={{
+//         opacity: 0,
+//         x: 70,
+//         scale: 0.92,
+//       }}
+//       animate={{
+//         opacity: 1,
+//         x: 0,
+//         scale: 1,
+//       }}
+//       exit={{
+//         opacity: 0,
+//         x: 70,
+//         scale: 0.94,
+//       }}
+//       transition={{
+//         duration: 0.7,
+//         ease: [0.22, 1, 0.36, 1],
+//       }}
+//       className="
+//         w-[250px]
+//         sm:w-[285px]
+//         lg:w-[310px]
+//         overflow-hidden
+//         rounded-2xl
+//         border
+//         border-white/10
+//         bg-[#1E2432]
+//         shadow-[0_25px_70px_rgba(0,0,0,0.35)]
+//       "
+//     >
+//       {/* Image */}
+
+//       <div className="relative h-32 sm:h-36 lg:h-40 overflow-hidden">
+//         <motion.img
+//           src={image}
+//           alt={phase.title}
+//           initial={{ scale: 1.12 }}
+//           animate={{ scale: 1 }}
+//           transition={{
+//             duration: 1.3,
+//             ease: "easeOut",
+//           }}
+//           className="h-full w-full object-cover"
+//         />
+
+//         <div className="
+//           absolute
+//           inset-0
+//           bg-gradient-to-t
+//           from-[#1E2432]
+//           via-transparent
+//           to-black/20
+//         " />
+
+//         {/* Phase number */}
+
+//         <span className="
+//           absolute
+//           left-3
+//           top-3
+//           rounded-full
+//           bg-black/60
+//           px-2.5
+//           py-1
+//           text-[8px]
+//           font-semibold
+//           tracking-[0.15em]
+//           text-[#FFBF00]
+//           backdrop-blur-md
+//         ">
+//           PHASE {String(index + 1).padStart(2, "0")}
+//         </span>
+
+//         {/* Icon */}
+
+//         <span className="
+//           absolute
+//           right-3
+//           top-3
+//           flex
+//           h-7
+//           w-7
+//           items-center
+//           justify-center
+//           rounded-full
+//           bg-[#FFBF00]
+//         ">
+//           <Icon className="h-3.5 w-3.5 text-[#1E2432]" />
+//         </span>
+//       </div>
+
+//       {/* Content */}
+
+//       <div className="p-4">
+//         <div className="flex items-start justify-between gap-3">
+//           <div className="min-w-0">
+//             <p className="
+//               mb-1
+//               text-[8px]
+//               uppercase
+//               tracking-[0.2em]
+//               text-white/30
+//             ">
+//               Construction Phase
+//             </p>
+
+//             <h3 className="
+//               truncate
+//               text-sm
+//               font-bold
+//               text-white
+//               sm:text-base
+//             ">
+//               {phase.title}
+//             </h3>
+//           </div>
+
+//           <span
+//             className={`
+//               shrink-0
+//               rounded-full
+//               px-2
+//               py-1
+//               text-[8px]
+//               font-semibold
+//               ${
+//                 status === "Completed"
+//                   ? "bg-[#FFBF00]/15 text-[#FFBF00]"
+//                   : status === "In Progress"
+//                   ? "bg-[#293A82]/50 text-white"
+//                   : "bg-white/5 text-white/30"
+//               }
+//             `}
+//           >
+//             {status}
+//           </span>
+//         </div>
+
+//         {/* Progress */}
+
+//         <div className="mt-4">
+//           <div className="
+//             mb-1.5
+//             flex
+//             items-center
+//             justify-between
+//             text-[8px]
+//             uppercase
+//             tracking-[0.12em]
+//             text-white/35
+//           ">
+//             <span>Progress</span>
+
+//             <span className="text-[#FFBF00]">
+//               {progress}%
+//             </span>
+//           </div>
+
+//           <div className="
+//             h-[3px]
+//             w-full
+//             overflow-hidden
+//             rounded-full
+//             bg-white/5
+//           ">
+//             <motion.div
+//               initial={{ width: 0 }}
+//               animate={{
+//                 width: `${progress}%`,
+//               }}
+//               transition={{
+//                 duration: 1,
+//                 ease: "easeOut",
+//               }}
+//               className="h-full bg-[#FFBF00]"
+//             />
+//           </div>
+//         </div>
+
+//         {/* Footer */}
+
+//         <div className="
+//           mt-4
+//           flex
+//           items-center
+//           justify-between
+//           border-t
+//           border-white/5
+//           pt-3
+//         ">
+//           <span className="
+//             text-[8px]
+//             uppercase
+//             tracking-[0.18em]
+//             text-white/25
+//           ">
+//             Handoff
+//           </span>
+
+//           <ArrowRight className="
+//             h-3.5
+//             w-3.5
+//             text-[#FFBF00]
+//           " />
+//         </div>
+//       </div>
+//     </motion.div>
+//   );
+// }
+
+// /* =========================================================
+//    GROUP NODE
+// ========================================================= */
+
+// function GroupNode({
+//   group,
+//   index,
+//   active,
+//   visible,
+// }) {
+//   const position = GROUP_POSITIONS[index];
+
+//   return (
+//     <motion.div
+//       initial={{
+//         opacity: 0,
+//         scale: 0.65,
+//       }}
+//       animate={{
+//         opacity: visible ? 1 : 0,
+//         scale: visible ? 1 : 0.65,
+//       }}
+//       exit={{
+//         opacity: 0,
+//         scale: 0.7,
+//       }}
+//       transition={{
+//         duration: 0.6,
+//         ease: [0.22, 1, 0.36, 1],
+//       }}
+//       className="
+//         absolute
+//         z-30
+//         -translate-x-1/2
+//         -translate-y-1/2
+//       "
+//       style={{
+//         left: `${position.x}%`,
+//         top: `${position.y}%`,
+//       }}
+//     >
+//       {/* Glow */}
+
+//       <AnimatePresence>
+//         {active && (
+//           <motion.div
+//             initial={{
+//               opacity: 0,
+//               scale: 0.7,
+//             }}
+//             animate={{
+//               opacity: [0.1, 0.35, 0.1],
+//               scale: [0.9, 1.25, 0.9],
+//             }}
+//             exit={{
+//               opacity: 0,
+//             }}
+//             transition={{
+//               duration: 1.8,
+//               repeat: Infinity,
+//               ease: "easeInOut",
+//             }}
+//             className="
+//               absolute
+//               inset-[-10px]
+//               rounded-full
+//               border
+//               border-[#FFBF00]/30
+//             "
+//           />
+//         )}
+//       </AnimatePresence>
+
+//       {/* Node */}
+
+//       <motion.div
+//         animate={{
+//           scale: active ? 1.08 : 1,
+//           borderColor: active
+//             ? GOLD
+//             : "rgba(255,191,0,0.4)",
+//           backgroundColor: active
+//             ? "rgba(255,191,0,0.08)"
+//             : BG,
+//         }}
+//         transition={{
+//           duration: 0.4,
+//         }}
+//         className="
+//           flex
+//           h-12
+//           w-12
+//           items-center
+//           justify-center
+//           rounded-full
+//           border
+//           text-[#FFBF00]
+//         "
+//       >
+//         <Plus className="h-4 w-4" />
+//       </motion.div>
+
+//       {/* Label */}
+
+//       <span
+//         className={`
+//           mt-2
+//           block
+//           whitespace-nowrap
+//           rounded-full
+//           border
+//           px-3
+//           py-1.5
+//           text-[8px]
+//           font-semibold
+//           uppercase
+//           tracking-[0.1em]
+//           backdrop-blur-md
+//           ${
+//             active
+//               ? "border-[#FFBF00]/30 bg-[#FFBF00]/10 text-[#FFBF00]"
+//               : "border-white/5 bg-white/5 text-white/45"
+//           }
+//         `}
+//       >
+//         {group.title}
+//       </span>
+//     </motion.div>
+//   );
+// }
+
+// /* =========================================================
+//    MAIN COMPONENT
+// ========================================================= */
+
+// export default function ProjectHierarchy({
+//   project,
+// }) {
+//   const sectionRef = useRef(null);
+
+//   const [isInView, setIsInView] = useState(false);
+
+//   /*
+//     root
+//     group
+//     phases
+//   */
+//   const [scene, setScene] = useState("root");
+
+//   const [groupIndex, setGroupIndex] = useState(0);
+
+//   /* =======================================================
+//      TARGET INDEX
+//   ======================================================= */
+
+//   const targetIndex = useMemo(() => {
+//     if (
+//       typeof project.currentPhase === "number"
+//     ) {
+//       return project.currentPhase;
+//     }
+
+//     if (
+//       project.status?.toLowerCase() ===
+//       "finished"
+//     ) {
+//       return PHASES.length - 1;
+//     }
+
+//     return Math.floor(
+//       PHASES.length / 2
+//     );
+//   }, [project]);
+
+//   /* =======================================================
+//      AVAILABLE GROUPS
+//   ======================================================= */
+
+//   const availableGroups = useMemo(() => {
+//     return GROUPS.filter((group) =>
+//       group.phases.some(
+//         (phaseIndex) =>
+//           phaseIndex <= targetIndex
+//       )
+//     ).map((group) => ({
+//       ...group,
+//       phases: group.phases.filter(
+//         (phaseIndex) =>
+//           phaseIndex <= targetIndex
+//       ),
+//     }));
+//   }, [targetIndex]);
+
+//   const currentGroup =
+//     availableGroups[groupIndex] || null;
+
+//   /* =======================================================
+//      IMAGE
+//   ======================================================= */
+
+//   const getImage = (phaseIndex) => {
+//     return (
+//       project.phaseGallery?.[phaseIndex] ||
+//       (project.gallery?.length
+//         ? project.gallery[
+//             phaseIndex %
+//               project.gallery.length
+//           ]
+//         : project.src)
+//     );
+//   };
+
+//   /* =======================================================
+//      STATUS
+//   ======================================================= */
+
+//   const getStatus = (index) => {
+//     if (index < targetIndex) {
+//       return "Completed";
+//     }
+
+//     if (index === targetIndex) {
+//       return "In Progress";
+//     }
+
+//     return "Pending";
+//   };
+
+//   /* =======================================================
+//      INTERSECTION
+//   ======================================================= */
+
+//   useEffect(() => {
+//     const element = sectionRef.current;
+
+//     if (!element) return;
+
+//     const observer =
+//       new IntersectionObserver(
+//         ([entry]) => {
+//           setIsInView(
+//             entry.isIntersecting
+//           );
+//         },
+//         {
+//           threshold: 0.25,
+//         }
+//       );
+
+//     observer.observe(element);
+
+//     return () => {
+//       observer.disconnect();
+//     };
+//   }, []);
+
+//   /* =======================================================
+//      RESET WHEN OUTSIDE VIEW
+//   ======================================================= */
+
+//   useEffect(() => {
+//     if (!isInView) {
+//       setScene("root");
+//       setGroupIndex(0);
+//     }
+//   }, [isInView]);
+
+//   /* =======================================================
+//      CINEMATIC SCENE MACHINE
+//   ======================================================= */
+
+//   useEffect(() => {
+//     if (
+//       !isInView ||
+//       !availableGroups.length
+//     ) {
+//       return;
+//     }
+
+//     let timer;
+
+//     /* -----------------------------------------------
+//        SCENE 01
+//        PROJECT START
+//     ------------------------------------------------ */
+
+//     if (scene === "root") {
+//       timer = setTimeout(() => {
+//         setScene("group");
+//       }, ROOT_DURATION);
+//     }
+
+//     /* -----------------------------------------------
+//        SCENE 02
+//        GROUP NODE
+//     ------------------------------------------------ */
+
+//     else if (scene === "group") {
+//       timer = setTimeout(() => {
+//         setScene("phases");
+//       }, GROUP_DURATION);
+//     }
+
+//     /* -----------------------------------------------
+//        SCENE 03
+//        PHASE BRANCHES
+//     ------------------------------------------------ */
+
+//     else if (scene === "phases") {
+//       timer = setTimeout(() => {
+//         const nextGroup =
+//           groupIndex + 1;
+
+//         /* -----------------------------------------
+//            Restart
+//         ------------------------------------------ */
+
+//         if (
+//           nextGroup >=
+//           availableGroups.length
+//         ) {
+//           setScene("root");
+//           setGroupIndex(0);
+//           return;
+//         }
+
+//         /* -----------------------------------------
+//            Transition to next group
+//         ------------------------------------------ */
+
+//         setScene("group");
+//         setGroupIndex(nextGroup);
+//       }, PHASE_HOLD);
+//     }
+
+//     return () => {
+//       clearTimeout(timer);
+//     };
+//   }, [
+//     scene,
+//     groupIndex,
+//     isInView,
+//     availableGroups.length,
+//   ]);
+
+//   /* =======================================================
+//      ROOT NODE
+//   ======================================================= */
+
+//   return (
+//     <section
+//       ref={sectionRef}
+//       className="
+//         relative
+//         w-full
+//         overflow-hidden
+//         bg-[#1E2432]
+//         px-4
+//         py-14
+//         sm:px-6
+//         sm:py-20
+//       "
+//     >
+//       <KineticGrid className="!h-auto rounded-2xl">
+//         <div className="
+//           relative
+//           mx-auto
+//           max-w-7xl
+//           px-4
+//           py-10
+//           sm:px-8
+//           sm:py-12
+//         ">
+//           {/* ==================================================
+//               HEADER
+//           ================================================== */}
+
+//           <div className="
+//             mb-8
+//             text-center
+//             sm:mb-10
+//           ">
+//             <span className="
+//               text-[10px]
+//               font-semibold
+//               uppercase
+//               tracking-[0.28em]
+//               text-[#FFBF00]
+//               sm:text-xs
+//             ">
+//               The Construction Journey
+//             </span>
+
+//             <h2 className="
+//               mt-3
+//               text-3xl
+//               font-bold
+//               text-white
+//               sm:text-4xl
+//               md:text-5xl
+//             ">
+//               From Ground To Completion
+//             </h2>
+
+//             <p className="
+//               mx-auto
+//               mt-3
+//               max-w-xl
+//               text-[11px]
+//               leading-relaxed
+//               text-white/35
+//               sm:text-xs
+//             ">
+//               One phase completes.
+//               The next one takes over.
+//             </p>
+//           </div>
+
+//           {/* ==================================================
+//               DESKTOP STAGE
+//           ================================================== */}
+
+//           <div className="
+//             relative
+//             hidden
+//             h-[430px]
+//             overflow-hidden
+//             md:block
+//             lg:h-[470px]
+//           ">
+//             {/* ==============================================
+//                 SVG TREE
+//             ============================================== */}
+
+//             <svg
+//               viewBox="0 0 100 100"
+//               preserveAspectRatio="none"
+//               className="
+//                 pointer-events-none
+//                 absolute
+//                 inset-0
+//                 h-full
+//                 w-full
+//               "
+//             >
+//               {/* --------------------------------------------
+//                   ROOT → ACTIVE GROUP
+//               --------------------------------------------- */}
+
+//               {scene !== "root" &&
+//                 currentGroup && (
+//                   <motion.path
+//                     d={`
+//                       M ${ROOT_POSITION.x}
+//                         ${ROOT_POSITION.y}
+
+//                       C
+//                         18
+//                         ${ROOT_POSITION.y}
+
+//                         22
+//                         ${GROUP_POSITIONS[
+//                           groupIndex
+//                         ].y}
+
+//                         ${GROUP_POSITIONS[
+//                           groupIndex
+//                         ].x}
+//                         ${GROUP_POSITIONS[
+//                           groupIndex
+//                         ].y}
+//                     `}
+//                     fill="none"
+//                     stroke={GOLD}
+//                     strokeWidth="0.4"
+//                     strokeLinecap="round"
+//                     initial={{
+//                       pathLength: 0,
+//                       opacity: 0,
+//                     }}
+//                     animate={{
+//                       pathLength: 1,
+//                       opacity: 1,
+//                     }}
+//                     transition={{
+//                       duration: 0.9,
+//                       ease: "easeInOut",
+//                     }}
+//                   />
+//                 )}
+
+//               {/* --------------------------------------------
+//                   GROUP → PHASES
+//               --------------------------------------------- */}
+
+//               <AnimatePresence>
+//                 {scene === "phases" &&
+//                   currentGroup &&
+//                   getPhasePositions(
+//                     currentGroup.phases.length
+//                   ).map(
+//                     (position, index) => {
+//                       const group =
+//                         GROUP_POSITIONS[
+//                           groupIndex
+//                         ];
+
+//                       return (
+//                         <motion.path
+//                           key={`branch-${currentGroup.phases[index]}`}
+//                           d={`
+//                             M
+//                               ${group.x}
+//                               ${group.y}
+
+//                             C
+//                               ${group.x + 12}
+//                               ${group.y}
+
+//                               ${position.x - 14}
+//                               ${position.y}
+
+//                               ${position.x}
+//                               ${position.y}
+//                           `}
+//                           fill="none"
+//                           stroke={LINE_ACTIVE}
+//                           strokeWidth="0.35"
+//                           strokeLinecap="round"
+//                           initial={{
+//                             pathLength: 0,
+//                             opacity: 0,
+//                           }}
+//                           animate={{
+//                             pathLength: 1,
+//                             opacity: 1,
+//                           }}
+//                           transition={{
+//                             delay:
+//                               index * 0.18,
+//                             duration: 0.8,
+//                             ease: "easeInOut",
+//                           }}
+//                         />
+//                       );
+//                     }
+//                   )}
+//               </AnimatePresence>
+//             </svg>
+
+//             {/* =================================================
+//                 PROJECT START
+//             ================================================= */}
+
+//             <AnimatePresence>
+//               {scene === "root" && (
+//                 <motion.div
+//                   key="project-start"
+//                   initial={{
+//                     opacity: 0,
+//                     scale: 0.75,
+//                   }}
+//                   animate={{
+//                     opacity: 1,
+//                     scale: 1,
+//                   }}
+//                   exit={{
+//                     opacity: 0,
+//                     scale: 0.7,
+//                   }}
+//                   transition={{
+//                     duration: 0.65,
+//                   }}
+//                   className="
+//                     absolute
+//                     z-40
+//                     -translate-x-1/2
+//                     -translate-y-1/2
+//                   "
+//                   style={{
+//                     left: `${ROOT_POSITION.x}%`,
+//                     top: `${ROOT_POSITION.y}%`,
+//                   }}
+//                 >
+//                   <div className="
+//                     flex
+//                     flex-col
+//                     items-center
+//                     gap-2
+//                   ">
+//                     <div className="
+//                       relative
+//                       h-24
+//                       w-24
+//                       overflow-hidden
+//                       rounded-full
+//                       border-2
+//                       border-[#FFBF00]
+//                       shadow-[0_0_50px_rgba(255,191,0,0.15)]
+//                       lg:h-28
+//                       lg:w-28
+//                     ">
+//                       <img
+//                         src={project.src}
+//                         alt={project.title}
+//                         className="
+//                           h-full
+//                           w-full
+//                           object-cover
+//                         "
+//                       />
+
+//                       <div className="
+//                         absolute
+//                         inset-0
+//                         bg-gradient-to-t
+//                         from-black/40
+//                         to-transparent
+//                       " />
+//                     </div>
+
+//                     <span className="
+//                       rounded-full
+//                       bg-[#293A82]
+//                       px-3
+//                       py-1
+//                       text-[9px]
+//                       font-semibold
+//                       uppercase
+//                       tracking-[0.12em]
+//                       text-white
+//                     ">
+//                       Project Start
+//                     </span>
+//                   </div>
+//                 </motion.div>
+//               )}
+//             </AnimatePresence>
+
+//             {/* =================================================
+//                 ACTIVE GROUP
+//             ================================================= */}
+
+//             <AnimatePresence mode="wait">
+//               {scene !== "root" &&
+//                 currentGroup && (
+//                   <GroupNode
+//                     key={`group-${groupIndex}`}
+//                     group={currentGroup}
+//                     index={groupIndex}
+//                     active={
+//                       scene === "phases"
+//                     }
+//                     visible
+//                   />
+//                 )}
+//             </AnimatePresence>
+
+//             {/* =================================================
+//                 PHASE CARDS
+//             ================================================= */}
+
+//             <AnimatePresence>
+//               {scene === "phases" &&
+//                 currentGroup &&
+//                 getPhasePositions(
+//                   currentGroup.phases.length
+//                 ).map((position, index) => {
+//                   const phaseIndex =
+//                     currentGroup.phases[index];
+
+//                   return (
+//                     <motion.div
+//                       key={`phase-${phaseIndex}`}
+//                       initial={{
+//                         opacity: 0,
+//                         left: `${GROUP_POSITIONS[groupIndex].x}%`,
+//                         top: `${GROUP_POSITIONS[groupIndex].y}%`,
+//                         scale: 0.88,
+//                       }}
+//                       animate={{
+//                         opacity: 1,
+//                         left: `${position.x}%`,
+//                         top: `${position.y}%`,
+//                         scale: 1,
+//                       }}
+//                       exit={{
+//                         opacity: 0,
+//                         left: "105%",
+//                         scale: 0.94,
+//                       }}
+//                       transition={{
+//                         delay: index * 0.18,
+//                         duration: 0.85,
+//                         ease: [
+//                           0.22,
+//                           1,
+//                           0.36,
+//                           1,
+//                         ],
+//                       }}
+//                       className="
+//                         absolute
+//                         z-40
+//                         -translate-x-1/2
+//                         -translate-y-1/2
+//                       "
+//                     >
+//                       <PhaseCard
+//                         phase={
+//                           PHASES[
+//                             phaseIndex
+//                           ]
+//                         }
+//                         index={phaseIndex}
+//                         image={getImage(
+//                           phaseIndex
+//                         )}
+//                         progress={Math.round(
+//                           ((phaseIndex + 1) /
+//                             PHASES.length) *
+//                             100
+//                         )}
+//                         status={getStatus(
+//                           phaseIndex
+//                         )}
+//                       />
+//                     </motion.div>
+//                   );
+//                 })}
+//             </AnimatePresence>
+
+//             {/* =================================================
+//                 LIVE LABEL
+//             ================================================= */}
+
+//             <div className="
+//               absolute
+//               bottom-1
+//               left-1/2
+//               z-20
+//               -translate-x-1/2
+//             ">
+//               <div className="
+//                 flex
+//                 items-center
+//                 gap-2
+//                 rounded-full
+//                 border
+//                 border-[#FFBF00]/15
+//                 bg-black/20
+//                 px-3
+//                 py-1.5
+//                 backdrop-blur-md
+//               ">
+//                 <motion.span
+//                   animate={{
+//                     opacity:
+//                       scene === "phases"
+//                         ? [0.3, 1, 0.3]
+//                         : 0.3,
+//                   }}
+//                   transition={{
+//                     duration: 1.2,
+//                     repeat:
+//                       scene === "phases"
+//                         ? Infinity
+//                         : 0,
+//                   }}
+//                   className="
+//                     h-1.5
+//                     w-1.5
+//                     rounded-full
+//                     bg-[#FFBF00]
+//                   "
+//                 />
+
+//                 <span className="
+//                   text-[8px]
+//                   uppercase
+//                   tracking-[0.2em]
+//                   text-white/40
+//                 ">
+//                   Live Construction Sequence
+//                 </span>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* ==================================================
+//               MOBILE
+//           ================================================== */}
+
+//           <div className="
+//             relative
+//             md:hidden
+//           ">
+//             <div className="
+//               relative
+//               h-[520px]
+//               overflow-hidden
+//             ">
+//               {/* Mobile tree */}
+
+//               <svg
+//                 viewBox="0 0 100 100"
+//                 preserveAspectRatio="none"
+//                 className="
+//                   pointer-events-none
+//                   absolute
+//                   inset-0
+//                   h-full
+//                   w-full
+//                 "
+//               >
+//                 {/* ROOT → GROUP */}
+
+//                 {scene !== "root" &&
+//                   currentGroup && (
+//                     <motion.path
+//                       d="
+//                         M 50 13
+//                         C 50 20, 50 22, 50 28
+//                       "
+//                       fill="none"
+//                       stroke={GOLD}
+//                       strokeWidth="0.6"
+//                       strokeLinecap="round"
+//                       initial={{
+//                         pathLength: 0,
+//                       }}
+//                       animate={{
+//                         pathLength: 1,
+//                       }}
+//                       transition={{
+//                         duration: 0.7,
+//                       }}
+//                     />
+//                   )}
+
+//                 {/* GROUP → PHASES */}
+
+//                 {scene === "phases" &&
+//                   currentGroup &&
+//                   getPhasePositions(
+//                     currentGroup.phases.length
+//                   ).map(
+//                     (_, index) => {
+//                       const phaseCount =
+//                         currentGroup.phases
+//                           .length;
+
+//                       let startX = 50;
+//                       let endX = 50;
+
+//                       if (
+//                         phaseCount === 2
+//                       ) {
+//                         endX =
+//                           index === 0
+//                             ? 28
+//                             : 72;
+//                       }
+
+//                       if (
+//                         phaseCount === 3
+//                       ) {
+//                         endX =
+//                           index === 0
+//                             ? 20
+//                             : index === 1
+//                             ? 50
+//                             : 80;
+//                       }
+
+//                       const endY =
+//                         phaseCount === 1
+//                           ? 75
+//                           : 72;
+
+//                       return (
+//                         <motion.path
+//                           key={`mobile-branch-${index}`}
+//                           d={`
+//                             M 50 31
+//                             C ${startX} 43,
+//                               ${endX} 55,
+//                               ${endX} ${endY}
+//                           `}
+//                           fill="none"
+//                           stroke={LINE_ACTIVE}
+//                           strokeWidth="0.6"
+//                           strokeLinecap="round"
+//                           initial={{
+//                             pathLength: 0,
+//                             opacity: 0,
+//                           }}
+//                           animate={{
+//                             pathLength: 1,
+//                             opacity: 1,
+//                           }}
+//                           transition={{
+//                             delay:
+//                               index * 0.15,
+//                             duration: 0.7,
+//                           }}
+//                         />
+//                       );
+//                     }
+//                   )}
+//               </svg>
+
+//               {/* Root */}
+
+//               <AnimatePresence>
+//                 {scene === "root" && (
+//                   <motion.div
+//                     initial={{
+//                       opacity: 0,
+//                       scale: 0.75,
+//                     }}
+//                     animate={{
+//                       opacity: 1,
+//                       scale: 1,
+//                     }}
+//                     exit={{
+//                       opacity: 0,
+//                       scale: 0.7,
+//                     }}
+//                     className="
+//                       absolute
+//                       left-1/2
+//                       top-[13%]
+//                       z-30
+//                       -translate-x-1/2
+//                       -translate-y-1/2
+//                     "
+//                   >
+//                     <div className="
+//                       flex
+//                       flex-col
+//                       items-center
+//                       gap-2
+//                     ">
+//                       <div className="
+//                         h-16
+//                         w-16
+//                         overflow-hidden
+//                         rounded-full
+//                         border-2
+//                         border-[#FFBF00]
+//                       ">
+//                         <img
+//                           src={project.src}
+//                           alt={project.title}
+//                           className="
+//                             h-full
+//                             w-full
+//                             object-cover
+//                           "
+//                         />
+//                       </div>
+
+//                       <span className="
+//                         rounded-full
+//                         bg-[#293A82]
+//                         px-2.5
+//                         py-1
+//                         text-[8px]
+//                         font-semibold
+//                         uppercase
+//                         text-white
+//                       ">
+//                         Project Start
+//                       </span>
+//                     </div>
+//                   </motion.div>
+//                 )}
+//               </AnimatePresence>
+
+//               {/* Group node */}
+
+//               <AnimatePresence mode="wait">
+//                 {scene !== "root" &&
+//                   currentGroup && (
+//                     <motion.div
+//                       key={`mobile-group-${groupIndex}`}
+//                       initial={{
+//                         opacity: 0,
+//                         scale: 0.7,
+//                       }}
+//                       animate={{
+//                         opacity: 1,
+//                         scale:
+//                           scene ===
+//                           "phases"
+//                             ? 1.08
+//                             : 1,
+//                       }}
+//                       exit={{
+//                         opacity: 0,
+//                         scale: 0.7,
+//                       }}
+//                       className="
+//                         absolute
+//                         left-1/2
+//                         top-[31%]
+//                         z-30
+//                         -translate-x-1/2
+//                         -translate-y-1/2
+//                       "
+//                     >
+//                       <div className="
+//                         flex
+//                         flex-col
+//                         items-center
+//                         gap-2
+//                       ">
+//                         <div className="
+//                           flex
+//                           h-11
+//                           w-11
+//                           items-center
+//                           justify-center
+//                           rounded-full
+//                           border
+//                           border-[#FFBF00]/60
+//                           bg-[#1E2432]
+//                           text-[#FFBF00]
+//                         ">
+//                           <Plus className="h-4 w-4" />
+//                         </div>
+
+//                         <span className="
+//                           whitespace-nowrap
+//                           rounded-full
+//                           border
+//                           border-[#FFBF00]/20
+//                           bg-[#FFBF00]/10
+//                           px-3
+//                           py-1
+//                           text-[8px]
+//                           font-semibold
+//                           uppercase
+//                           text-[#FFBF00]
+//                         ">
+//                           {currentGroup.title}
+//                         </span>
+//                       </div>
+//                     </motion.div>
+//                   )}
+//               </AnimatePresence>
+
+//               {/* Mobile cards */}
+
+//               <AnimatePresence>
+//                 {scene === "phases" &&
+//                   currentGroup &&
+//                   currentGroup.phases.map(
+//                     (phaseIndex, index) => {
+//                       const positions =
+//                         getPhasePositions(
+//                           currentGroup
+//                             .phases.length
+//                         );
+
+//                       let x = 50;
+
+//                       if (
+//                         currentGroup.phases
+//                           .length === 2
+//                       ) {
+//                         x =
+//                           index === 0
+//                             ? 24
+//                             : 76;
+//                       }
+
+//                       if (
+//                         currentGroup.phases
+//                           .length === 3
+//                       ) {
+//                         x =
+//                           index === 0
+//                             ? 20
+//                             : index === 1
+//                             ? 50
+//                             : 80;
+//                       }
+
+//                       return (
+//                         <motion.div
+//                           key={`mobile-card-${phaseIndex}`}
+//                           initial={{
+//                             opacity: 0,
+//                             y: 40,
+//                             scale: 0.88,
+//                           }}
+//                           animate={{
+//                             opacity: 1,
+//                             y: 0,
+//                             scale: 1,
+//                           }}
+//                           exit={{
+//                             opacity: 0,
+//                             y: 40,
+//                             scale: 0.9,
+//                           }}
+//                           transition={{
+//                             delay:
+//                               index * 0.17,
+//                             duration: 0.65,
+//                             ease: [
+//                               0.22,
+//                               1,
+//                               0.36,
+//                               1,
+//                             ],
+//                           }}
+//                           className="
+//                             absolute
+//                             z-40
+//                             w-[calc(100%-20px)]
+//                             max-w-[300px]
+//                             -translate-x-1/2
+//                           "
+//                           style={{
+//                             left:
+//                               `${x}%`,
+//                             top:
+//                               currentGroup
+//                                 .phases
+//                                 .length === 1
+//                                 ? "69%"
+//                                 : "67%",
+//                           }}
+//                         >
+//                           <PhaseCard
+//                             phase={
+//                               PHASES[
+//                                 phaseIndex
+//                               ]
+//                             }
+//                             index={
+//                               phaseIndex
+//                             }
+//                             image={getImage(
+//                               phaseIndex
+//                             )}
+//                             progress={Math.round(
+//                               ((phaseIndex +
+//                                 1) /
+//                                 PHASES.length) *
+//                                 100
+//                             )}
+//                             status={getStatus(
+//                               phaseIndex
+//                             )}
+//                           />
+//                         </motion.div>
+//                       );
+//                     }
+//                   )}
+//               </AnimatePresence>
+//             </div>
+//           </div>
+//         </div>
+//       </KineticGrid>
+//     </section>
+//   );
+// }

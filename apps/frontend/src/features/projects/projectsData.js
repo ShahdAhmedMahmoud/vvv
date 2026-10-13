@@ -1,0 +1,744 @@
+export const categories = [
+  { label: "All" },
+  { label: "Infrastructure" },
+  { label: "Commercial Buildings" },
+  { label: "Road And Generalist" },
+];
+
+
+ export const projects = [
+  {
+    id: 1,
+    title: " FINANCIAL DISTRICT SQUARE",
+    status: "ongoing",
+    category: "Infrastructure",
+    src: "/2/Projects_25-5-2023-96.png",
+          gallery: [
+            "/2/Projects_25-5-2023-96.png",
+    "/2/Projects_25-5-2023-98.png",
+    "/2/Projects_25-5-2023-97.png", 
+  ],
+  },
+  {
+    id: 2,
+    title: "SALLUM LAND PORT",
+    status: "ongoing",
+    category: "Infrastructure",
+    src: "/images/SALLUM_LAND_PORT.png",
+          gallery: [
+            "/images/SALLUM_LAND_PORT.png",
+    "/images/commerical/1.png",
+    "/images/commerical/9.png", 
+  ],
+  },
+  {
+    id: 3,
+    title: "THE GENERAL SITE OF BIN ZAYED AXIS",
+    status: "Finished",
+    category: "Infrastructure",
+    src: "/images/THE_GENERAL_SITE_OF_BIN_ZAYED_AXIS.png",
+          gallery: [
+            "/images/THE_GENERAL_SITE_OF_BIN_ZAYED_AXIS.png",
+    "/images/commerical/1.png",
+    "/images/commerical/9.png", 
+  ],
+  },
+  {
+    id: 4,
+    title: "MIDTOWN CONDO",
+    status: "ongoing",
+    category: "Infrastructure",
+    src: "/images/MIDTOWN_CONDO.png",
+          gallery: [
+            "/images/MIDTOWN_CONDO.png",
+    "/images/commerical/1.png",
+    "/images/commerical/9.png", 
+  ],
+  },
+  {
+    id: 5,
+    title: "MIDTOWN SOLO",
+    status: "ongoing",
+    category: "Infrastructure",
+    src: "/images/MIDTOWN_SOLO.png",
+          gallery: [
+            "/images/MIDTOWN_SOLO.png",
+    "/images/commerical/1.png",
+    "/images/commerical/9.png", 
+  ],
+  },
+  {
+    id: 6,
+    title: "FUSTAT PARK",
+    status: "Finished",
+    category: "Infrastructure",
+    src: "/images/Fustat_Park.png",
+          gallery: [
+            "/images/Fustat_Park.png",
+    "/images/commerical/1.png",
+    "/images/commerical/9.png", 
+  ],
+  },
+  {
+    id: 7,
+    title: "GALALA TOURIST RESORT",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/1.png",
+      gallery: [
+    "/images/commerical/1.png",
+    "/images/commerical/9.png", 
+  ],
+  },
+  {
+    id: 8,
+    title: "THE ROYAL COMPOUND TOURIST RESORT",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/2.png",
+        gallery: [
+    "/images/commerical/2.png",
+    "/images/commerical/9.png", 
+  ],
+  },
+  {
+    id: 9,
+    title: "20 THOUSAND BUILDINGS IN THE NEW CAPITAL",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/3.png",
+        gallery: [
+    "/images/commerical/3.png",
+    "/images/commerical/9.png", 
+  ],
+  },
+  {
+    id: 10,
+    title: "Shebin El-Qanater Hospital",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/4.png",
+    gallery: [
+      "/images/commerical/4.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 11,
+    title: "R3 RESIDENTIAL COMPOUND",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/5.png",
+    gallery: [
+      "/images/commerical/5.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 12,
+    title: "GAL-DABAA NUCLEAR POWER PLANT",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/6.png",
+    gallery: [
+      "/images/commerical/6.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 13,
+    title: "WADI ABU AL-DARAJ CITY",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/7.png",
+    gallery: [
+      "/images/commerical/7.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 14,
+    title: "Dabaa residential areas",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/8.png",
+    gallery: [
+      "/images/commerical/8.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 15,
+    title: "GALALA TOURIST RESORT",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/9.png",
+    gallery: [
+      "/images/commerical/9.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 16,
+    title: "TOLIP EL ALAMEIN CITY HOTEL",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/10.png",
+    gallery: [
+      "/images/commerical/10.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 17,
+    title: "THE GALALA'S PLATEAU",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/11.png",
+    gallery: [
+      "/images/commerical/11.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 18,
+    title: "Administrative commercial buildings next to the family garden",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/12.png",
+    gallery: [
+      "/images/commerical/12.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 19,
+    title: "ADMINISTRATIVE BUILDING (CS 10)",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/13.png",
+    gallery: [
+      "/images/commerical/13.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 20,
+    title: "THE MAIN BUS STATION OF NEW ADMIN.CAPITAL",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/14.png",
+    gallery: [
+      "/images/commerical/14.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 21,
+    title: "ARAB INTERNATIONAL BANK HEADQUARTERS",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/15.png",
+    gallery: [
+      "/images/commerical/15.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 22,
+    title: "AMERICAN UNIVERSITY MALL",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/16.png",
+    gallery: [
+      "/images/commerical/16.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 23,
+    title: "STRIP MALL & FASHION HUB",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/17.png",
+    gallery: [
+      "/images/commerical/17.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 24,
+    title: "ALMAZA MALL",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/18.png",
+    gallery: [
+      "/images/commerical/18.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 25,
+    title: "THE CULTURAL CENTER IN THE MOSQUE OF EGYPT",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/19.png",
+    gallery: [
+      "/images/commerical/19.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 26,
+    title: "SHEBEEN EL KOM MALL",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/20.png",
+    gallery: [
+      "/images/commerical/20.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 27,
+    title: "ADMINISTRATIVE BUILDINGS IN (90) SOUTH",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/21.png",
+    gallery: [
+      "/images/commerical/21.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 28,
+    title: "TRUE GYM BUILDING",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/22.png",
+    gallery: [
+      "/images/commerical/22.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 29,
+    title: "CAIRO GATE COMPOUND MOSQUE",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/23.png",
+    gallery: [
+      "/images/commerical/23.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 30,
+    title: "ADMINISTRATIVE BUILDING (CS 20)",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/24.png",
+    gallery: [
+      "/images/commerical/24.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 31,
+    title: "FAIR ZONE",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/25.png",
+    gallery: [
+      "/images/commerical/25.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 32,
+    title: "NEW DAR GROUP HEADQUARTERS",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/26.png",
+    gallery: [
+      "/images/commerical/26.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 33,
+    title: "LOTUS MALL",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/27.png",
+    gallery: [
+      "/images/commerical/27.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 34,
+    title: "DURRAT ALKARAZ RESORT",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/28.png",
+    gallery: [
+      "/images/commerical/28.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 35,
+    title: "DORRA ALKARZ MALL 2",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/29.png",
+    gallery: [
+      "/images/commerical/29.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 36,
+    title: "MILITARY SIGNAL INSTITUTE",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/30.png",
+    gallery: [
+      "/images/commerical/30.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 37,
+    title: "ASSIUT NATIONAL UNIVERSITY",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/31.png",
+    gallery: [
+      "/images/commerical/31.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 38,
+    title: "DORRA ALKARZ MALL 2",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/32.png",
+    gallery: [
+      "/images/commerical/32.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 39,
+    title: "EGYPT JAPAN UNIVERSITY",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/33.png",
+    gallery: [
+      "/images/commerical/33.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 40,
+    title: "ASSIUT UNIVERSITY OF TECHNOLOGY",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/34.png",
+    gallery: [
+      "/images/commerical/34.png",
+      "/images/commerical/9.png",
+    ],
+  },
+  {
+    id: 41,
+    title: "Port Said University",
+    status: "Ongoing",
+    category: "Commercial Buildings",
+    src: "/images/commerical/35.png",
+    gallery: [
+      "/images/commerical/35.png",
+      "/images/commerical/9.png",
+    ],
+  },
+];
+
+
+export const projectDetails = {
+  1: {
+    location: "Central Business District, New Administrative Capital",
+    year: 2023,
+    lat: 30.0281,
+    lng: 31.7361,
+      beforeImage: "/2/before.jfif",
+  afterImage: "/2/Projects_25-5-2023-96.png",
+  transformationHighlights: [
+    { title: "Structural completion", description: "Full concrete frame and steel structure completed on schedule." },
+    { title: "Facade finishing", description: "Glass curtain wall and cladding fully installed." },
+    { title: "Site handover", description: "Final inspection passed and site handed over ready for use." },
+  ],
+   currentPhase: 7,
+     phaseGallery: [
+    "/2/before.jfif", // Project Start
+    "/2/Projects_25-5-2023-96.png", // Site Preparation
+    // ... لحد 8 صور، أو سيبيها فاضية والكومبوننت هيستخدم صورة المشروع الأساسية بدالها
+  ],
+  },
+  2: {
+    location: "Salloum border crossing, Matrouh",
+    year: 2021,
+    lat: 31.5645,
+    lng: 25.1483,
+  },
+  3: {
+    location: "Mohamed Bin Zayed Axis, New Cairo",
+    year: 2022,
+    lat: 30.0397,
+    lng: 31.5083,
+  },
+  4: {
+    location: "District R7, New Administrative Capital",
+    year: 2023,
+    lat: 30.0035,
+    lng: 31.6913,
+  },
+  5: {
+    location: "District R8, New Administrative Capital",
+    year: 2024,
+    lat: 29.9972,
+    lng: 31.7032,
+  },
+  6: {
+    location: "Ain El Sira, Old Cairo",
+    year: 2024,
+    lat: 30.009,
+    lng: 31.2427,
+  },
+  7: {
+    location: "El Galala City, Suez",
+    year: 2022,
+    lat: 29.4703,
+    lng: 32.3453,
+  },
+  8: {
+    location: "Ain Sokhna, Suez",
+    year: 2023,
+    lat: 29.5842,
+    lng: 32.3199,
+  },
+  9: {
+    location: "District R3, New Administrative Capital",
+    year: 2021,
+    lat: 30.01,
+    lng: 31.71,
+  },
+  10: {
+    location: "Shebin El-Qanater, Qalyubia",
+    year: 2022,
+    lat: 30.3092,
+    lng: 31.3233,
+  },
+  11: {
+    location: "District R3, New Administrative Capital",
+    year: 2023,
+    lat: 30.0125,
+    lng: 31.7189,
+  },
+  12: {
+    location: "El Dabaa, Matrouh",
+    year: 2020,
+    lat: 31.0281,
+    lng: 28.4653,
+  },
+  13: {
+    location: "Wadi Abu Daraj, Suez",
+    year: 2023,
+    lat: 29.3145,
+    lng: 32.5347,
+  },
+  14: {
+    location: "El Dabaa, Matrouh",
+    year: 2022,
+    lat: 31.0186,
+    lng: 28.4831,
+  },
+  15: {
+    location: "El Galala City, Suez",
+    year: 2021,
+    lat: 29.4822,
+    lng: 32.3311,
+  },
+  16: {
+    location: "New Alamein City, Matrouh",
+    year: 2022,
+    lat: 30.8306,
+    lng: 28.9611,
+  },
+  17: {
+    location: "El Galala Plateau, Suez",
+    year: 2020,
+    lat: 29.4905,
+    lng: 32.3169,
+  },
+  18: {
+    location: "Family Park, Fifth Settlement, New Cairo",
+    year: 2024,
+    lat: 30.0179,
+    lng: 31.4602,
+  },
+  19: {
+    location: "Government District, New Administrative Capital",
+    year: 2023,
+    lat: 30.0245,
+    lng: 31.7472,
+  },
+  20: {
+    location: "Capital Bus Terminal, New Administrative Capital",
+    year: 2022,
+    lat: 30.0043,
+    lng: 31.8137,
+  },
+  21: {
+    location: "Fifth Settlement, New Cairo",
+    year: 2021,
+    lat: 30.0296,
+    lng: 31.4711,
+  },
+  22: {
+    location: "AUC area, New Cairo",
+    year: 2020,
+    lat: 30.0206,
+    lng: 31.4996,
+  },
+  23: {
+    location: "Sheikh Zayed City, Giza",
+    year: 2023,
+    lat: 30.0469,
+    lng: 30.9743,
+  },
+  24: {
+    location: "Almaza, Heliopolis, Cairo",
+    year: 2022,
+    lat: 30.0894,
+    lng: 31.3699,
+  },
+  25: {
+    location: "Misr Mosque, New Administrative Capital",
+    year: 2024,
+    lat: 30.0148,
+    lng: 31.7803,
+  },
+  26: {
+    location: "Shebeen El Kom, Menoufia",
+    year: 2021,
+    lat: 30.5526,
+    lng: 31.0083,
+  },
+  27: {
+    location: "90th Street South, New Cairo",
+    year: 2022,
+    lat: 30.0142,
+    lng: 31.4413,
+  },
+  28: {
+    location: "Sheikh Zayed City, Giza",
+    year: 2023,
+    lat: 30.0391,
+    lng: 30.9765,
+  },
+  29: {
+    location: "Cairo Gate, Cairo-Alexandria Desert Road, Sheikh Zayed",
+    year: 2022,
+    lat: 30.0546,
+    lng: 31.0002,
+  },
+  30: {
+    location: "Government District, New Administrative Capital",
+    year: 2024,
+    lat: 30.0262,
+    lng: 31.7545,
+  },
+  31: {
+    location:
+      "Egypt International Exhibition Center, New Administrative Capital",
+    year: 2023,
+    lat: 30.0562,
+    lng: 31.7318,
+  },
+  32: {
+    location: "Fifth Settlement, New Cairo",
+    year: 2021,
+    lat: 30.0255,
+    lng: 31.4864,
+  },
+  33: {
+    location: "First Settlement, New Cairo",
+    year: 2020,
+    lat: 30.0001,
+    lng: 31.4485,
+  },
+  34: {
+    location: "Ain Sokhna, Suez",
+    year: 2022,
+    lat: 29.5581,
+    lng: 32.3541,
+  },
+  35: {
+    location: "Ain Sokhna, Suez",
+    year: 2023,
+    lat: 29.5612,
+    lng: 32.3505,
+  },
+  36: {
+    location: "Nasr City, Cairo",
+    year: 2021,
+    lat: 30.0761,
+    lng: 31.3477,
+  },
+  37: {
+    location: "Assiut",
+    year: 2023,
+    lat: 27.2043,
+    lng: 31.1687,
+  },
+  38: {
+    location: "Ain Sokhna, Suez",
+    year: 2024,
+    lat: 29.5535,
+    lng: 32.3612,
+  },
+  39: {
+    location: "New Borg El Arab, Alexandria",
+    year: 2020,
+    lat: 30.8659,
+    lng: 29.569,
+  },
+  40: {
+    location: "Assiut",
+    year: 2024,
+    lat: 27.1843,
+    lng: 31.1547,
+  },
+  41: {
+    location: "Port Said",
+    year: 2022,
+    lat: 31.2585,
+    lng: 32.2841,
+  },
+};
+
+export const projectsWithDetails = projects.map((p) => ({
+  ...p,
+  ...(projectDetails[p.id] || {}),
+}));
+
+export function normalizeStatus(status) {
+  const s = status.toLowerCase();
+
+  if (s === "finished") return "Finished";
+
+  return "Ongoing";
+}
