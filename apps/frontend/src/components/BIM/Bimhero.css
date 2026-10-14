@@ -69,6 +69,78 @@
 .bim-project__copy small { overflow: hidden; color: var(--bim-charcoal); font: 400 10px/1.35 var(--font-body, sans-serif); text-overflow: ellipsis; white-space: nowrap; }
 .bim-project__arrow { color: var(--bim-indigo); }
 [dir="rtl"] .bim-timeline::after { transform-origin: right; }
+
+/* Architectural linework is drawn in CSS/SVG so it stays within the brand palette. */
+.bim-hero::before { background: rgba(42,49,122,.18); }
+.bim-hero__inner { max-width: 1400px; }
+.bim-hero__intro { position: relative; z-index: 1; max-width: 780px; margin: 0; text-align: start; }
+.bim-hero h1 { letter-spacing: -.045em; }
+.bim-architecture { position: absolute; z-index: 0; top: 142px; right: max(20px, calc((100vw - 1400px)/2)); width: min(39vw, 520px); opacity: .78; pointer-events: none; }
+.bim-architecture svg { display: block; width: 100%; overflow: visible; }
+.bim-architecture svg path { stroke: rgba(60,60,59,.34); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.bim-architecture svg .bim-architecture__accent { stroke: rgba(42,49,122,.66); stroke-width: 1.35; }
+.bim-architecture__note, .bim-architecture__caption { color: var(--bim-charcoal); font: 500 9px/1.4 var(--font-body, sans-serif); letter-spacing: .16em; }
+.bim-architecture__note { display: block; margin: 0 0 8px 7%; color: var(--bim-indigo); }
+.bim-architecture__caption { display: block; margin: 4px 0 0 18%; opacity: .75; }
+.bim-architecture__caption i { color: var(--bim-indigo); font-style: normal; }
+.bim-timeline-wrap { position: relative; z-index: 1; margin-top: clamp(52px, 7vw, 82px); }
+.bim-timeline { min-width: 0; }
+.bim-timeline__item { padding-inline: 3px; }
+.bim-phase { padding-inline: 8px; }
+.bim-results { position: relative; z-index: 1; }
+.bim-project { background: #fff; }
+.bim-timeline-heading { font-size: 11px; letter-spacing: .12em; }
+.bim-timeline { min-width: 0; }
+.bim-phase { min-height: 158px; padding-top: 19px; }
+.bim-phase__node { display: grid; place-items: center; width: 36px; height: 36px; flex-basis: 36px; border-color: rgba(60,60,59,.32); }
+.bim-phase__node::after { inset: 0; }
+.bim-phase__node svg { position: relative; z-index: 1; color: var(--bim-charcoal); transition: color .25s ease, transform .25s ease; }
+.bim-timeline__item.is-active .bim-phase__node::after { inset: 0; }
+.bim-timeline__item.is-active .bim-phase__node svg { color: #fff; transform: scale(.94); }
+.bim-phase__label { max-width: 160px; font-size: 13px; line-height: 1.45; }
+.bim-phase__detail { font-size: 11px; }
+.bim-results { grid-template-columns: minmax(200px, .55fr) minmax(0, 1.8fr); align-items: start; gap: 24px; padding: 25px; }
+.bim-results__label h2 { font-size: 18px; line-height: 1.35; }
+.bim-results__label p { font-size: 10px; }
+.bim-projects { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; animation: bim-projects-in .32s ease both; }
+.bim-project { display: block; overflow: hidden; padding: 0; border-color: rgba(60,60,59,.16); background: #fff; }
+.bim-project__image { position: relative; display: block; overflow: hidden; aspect-ratio: 16 / 10; background: rgba(60,60,59,.06); }
+.bim-project__image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+.bim-project:hover .bim-project__image img { transform: scale(1.045); }
+.bim-project__copy { display: flex; min-height: 83px; flex-direction: column; justify-content: center; gap: 7px; padding: 12px 14px; }
+.bim-project__copy small { color: var(--bim-indigo); font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.bim-project__copy strong { display: -webkit-box; overflow: hidden; color: var(--bim-charcoal); font-size: 12px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.bim-project__arrow { position: absolute; right: 10px; bottom: 10px; display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(255,255,255,.8); border-radius: 50%; background: #fff; color: var(--bim-indigo); transition: transform .2s ease, background .2s ease, color .2s ease; }
+.bim-project:hover .bim-project__arrow { transform: translate(2px,-2px); background: var(--bim-indigo); color: #fff; }
+.bim-project:focus-visible { outline: 2px solid var(--bim-indigo); outline-offset: 3px; }
+@keyframes bim-projects-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 1100px) {
+  .bim-phase { min-height: 150px; }
+  .bim-projects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .bim-results { grid-template-columns: 1fr; gap: 18px; padding: 18px; }
+  .bim-projects { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .bim-project__copy { min-height: 78px; padding: 10px; }
+  .bim-project__copy strong { font-size: 11px; }
+  .bim-project__arrow { right: 7px; bottom: 7px; width: 30px; height: 30px; }
+}
+@media (max-width: 420px) {
+  .bim-projects { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bim-projects { animation: none; }
+  .bim-project__image img, .bim-project__arrow, .bim-phase__node svg { transition: none; }
+}
+@media (max-width: 1100px) {
+  .bim-architecture { top: 155px; right: 18px; width: 38vw; opacity: .34; }
+  .bim-timeline { min-width: 960px; }
+}
+@media (max-width: 700px) {
+  .bim-hero__intro { max-width: 580px; }
+  .bim-architecture { top: 177px; right: -50px; width: 68vw; opacity: .16; }
+  .bim-timeline { min-width: 980px; }
+}
 @media (max-width: 1100px) {
   .bim-timeline { min-width: 980px; }
   .bim-timeline-hint { display: flex; align-items: center; gap: 8px; }
@@ -88,4 +160,123 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .bim-timeline::after, .bim-phase__number, .bim-phase__label, .bim-phase__node, .bim-phase__node::after, .bim-results, .bim-project { transition: none; }
+}
+
+/* Reference-led composition: editorial headline, real project image, and a horizontal project rail. */
+.bim-hero { padding-top: clamp(132px, 12vw, 170px); }
+.bim-hero__intro { max-width: 610px; }
+.bim-hero h1 { display: flex; flex-direction: column; gap: 2px; font-size: clamp(46px, 5.2vw, 72px); line-height: 1.04; }
+.bim-hero h1 span { color: var(--bim-charcoal); font-weight: 400; }
+.bim-hero h1 em { font-weight: 750; letter-spacing: -.055em; }
+.bim-hero__lede { max-width: 445px; margin: 19px 0 0; font-size: 15px; line-height: 1.65; }
+.bim-hero__explore { display: inline-flex; align-items: center; gap: 13px; margin-top: 26px; color: var(--bim-indigo); font: 600 11px/1.4 var(--font-body, sans-serif); letter-spacing: .03em; text-decoration: none; }
+.bim-hero__explore > span { display: inline-flex; align-items: center; border-top: 1px solid var(--bim-indigo); width: 37px; height: 1px; }
+.bim-hero__explore > span svg { margin-inline-start: auto; }
+.bim-hero__explore i { display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid rgba(42,49,122,.48); border-radius: 50%; font-style: normal; transition: background .2s ease,color .2s ease,transform .2s ease; }
+.bim-hero__explore:hover i { transform: translate(2px,-2px); background: var(--bim-indigo); color: #fff; }
+.bim-architecture { top: 105px; right: max(20px, calc((100vw - 1400px)/2)); width: min(54vw, 710px); opacity: 1; }
+.bim-architecture__note { position: relative; z-index: 2; margin-left: 28%; }
+.bim-architecture__photo { position: absolute; z-index: 0; right: 1%; bottom: 12%; width: 69%; height: 76%; object-fit: cover; object-position: center; filter: grayscale(.78) contrast(.96); opacity: .76; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 28%, #000 82%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 28%, #000 82%, transparent 100%); }
+.bim-architecture svg { position: relative; z-index: 1; }
+.bim-architecture svg path { stroke: rgba(42,49,122,.43); stroke-dasharray: 900; stroke-dashoffset: 900; animation: bim-blueprint-draw 2.2s cubic-bezier(.2,.7,.2,1) forwards; }
+.bim-architecture svg path:nth-child(2) { animation-delay: .18s; }
+.bim-architecture svg path:nth-child(3) { animation-delay: .34s; }
+.bim-architecture svg path:nth-child(4) { animation-delay: .48s; }
+@keyframes bim-blueprint-draw { to { stroke-dashoffset: 0; } }
+.bim-architecture__caption { position: relative; z-index: 2; }
+.bim-timeline-wrap { margin-top: clamp(36px, 4vw, 58px); }
+.bim-timeline { min-width: 0; }
+.bim-results { grid-template-columns: minmax(190px, .42fr) minmax(0, 1.8fr) auto; align-items: center; gap: 24px; padding: 24px 26px; border-color: rgba(42,49,122,.17); border-radius: 7px; background: rgba(255,255,255,.88); }
+.bim-results__label { gap: 13px; }
+.bim-results__label > div { display: flex; flex-direction: column; align-items: flex-start; }
+.bim-results__label h2 { font-size: 16px; }
+.bim-results__count { display: flex; align-items: baseline; gap: 8px; margin-top: 18px; color: var(--bim-charcoal); font-size: 10px; }
+.bim-results__count strong { color: var(--bim-indigo); font-size: 30px; line-height: 1; }
+.bim-results__all { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; color: var(--bim-indigo); font: 600 10px/1.4 var(--font-body, sans-serif); text-decoration: none; }
+.bim-results__all:hover { text-decoration: underline; }
+.bim-projects { display: flex; min-width: 0; overflow-x: auto; gap: 12px; padding: 2px 1px 8px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: rgba(42,49,122,.32) transparent; }
+.bim-project { flex: 0 0 calc((100% - 36px)/4); scroll-snap-align: start; border-color: rgba(42,49,122,.14); border-radius: 6px; }
+.bim-project-controls { display: flex; gap: 8px; }
+.bim-project-controls button { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border: 1px solid rgba(42,49,122,.38); border-radius: 50%; background: #fff; color: var(--bim-indigo); cursor: pointer; transition: background .2s ease,color .2s ease; }
+.bim-project-controls button:hover { background: var(--bim-indigo); color: #fff; }
+.bim-project-controls button:focus-visible { outline: 2px solid var(--bim-indigo); outline-offset: 2px; }
+@media (max-width: 1100px) {
+  .bim-architecture { top: 122px; right: -12px; width: 57vw; opacity: .72; }
+  .bim-results { grid-template-columns: 1fr auto; }
+  .bim-results__label { grid-column: 1 / -1; }
+  .bim-projects { grid-column: 1; grid-row: 2; }
+  .bim-project-controls { grid-column: 2; grid-row: 2; }
+  .bim-project { flex-basis: calc((100% - 24px)/3); }
+}
+@media (max-width: 700px) {
+  .bim-hero { padding-top: 112px; }
+  .bim-hero__intro { max-width: 100%; }
+  .bim-hero h1 { max-width: 570px; font-size: clamp(42px, 10vw, 60px); }
+  .bim-hero__lede { max-width: 390px; margin-inline: 0; font-size: 14px; }
+  .bim-architecture { top: 170px; right: -100px; width: 90vw; opacity: .28; }
+  .bim-timeline-wrap { margin-top: 42px; }
+  .bim-results { grid-template-columns: 1fr auto; gap: 14px; padding: 17px; }
+  .bim-results__label { grid-column: 1 / -1; }
+  .bim-results__count { margin-top: 10px; }
+  .bim-results__all { margin-top: 10px; }
+  .bim-projects { grid-column: 1 / -1; grid-row: 2; }
+  .bim-project { flex-basis: calc((100% - 12px)/2); }
+  .bim-project-controls { grid-column: 1 / -1; grid-row: 3; justify-content: flex-end; }
+}
+@media (max-width: 420px) {
+  .bim-project { flex-basis: 84%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bim-architecture svg path { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; }
+}
+
+/* Numbered nodes and stronger, dimensioned elevation drawing. */
+.bim-hero__intro { animation: bim-intro-enter .7s cubic-bezier(.2,.7,.2,1) both; }
+.bim-timeline-wrap { animation: bim-intro-enter .8s .12s cubic-bezier(.2,.7,.2,1) both; }
+.bim-results { animation: bim-intro-enter .8s .2s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes bim-intro-enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.bim-timeline::before, .bim-timeline::after { top: 39px; height: 2px; }
+.bim-phase { padding-top: 19px; }
+.bim-phase__top { justify-content: center; }
+.bim-phase__node { width: 44px; height: 44px; flex-basis: 44px; border-color: rgba(42,49,122,.42); }
+.bim-phase__node::before { position: absolute; inset: -7px; border: 1px solid rgba(42,49,122,.18); border-radius: 50%; content: ""; opacity: 0; transform: scale(.84); }
+.bim-phase__node::after { inset: 0; }
+.bim-phase__node-number { position: relative; z-index: 1; color: var(--bim-charcoal); font: 600 13px/1 var(--font-body, sans-serif); letter-spacing: .04em; transition: color .25s ease, transform .25s ease; }
+.bim-timeline__item.is-active .bim-phase__node { border-color: var(--bim-indigo); background: var(--bim-indigo); transform: scale(1.05); }
+.bim-timeline__item.is-active .bim-phase__node::before { animation: bim-node-pulse 1.8s ease-out infinite; opacity: 1; }
+.bim-timeline__item.is-active .bim-phase__node::after { inset: 0; background: transparent; }
+.bim-timeline__item.is-active .bim-phase__node-number { color: #fff; transform: scale(1.04); }
+@keyframes bim-node-pulse { 0% { opacity: .65; transform: scale(.84); } 100% { opacity: 0; transform: scale(1.2); } }
+.bim-architecture { position: absolute; }
+.bim-architecture__photo { filter: grayscale(.86) contrast(1.04); opacity: .84; }
+.bim-architecture svg { overflow: visible; }
+.bim-architecture svg path { stroke: rgba(42,49,122,.72); stroke-width: 1.1; }
+.bim-architecture svg path:nth-child(2) { stroke-width: 1.3; }
+.bim-architecture svg path:nth-child(3) { stroke: rgba(42,49,122,.84); stroke-width: 1.35; }
+.bim-architecture svg .bim-architecture__accent { stroke: #2A317A; stroke-width: 1.8; }
+.bim-architecture svg .bim-architecture__dimension { stroke: rgba(60,60,59,.72); stroke-width: .9; stroke-dasharray: 4 4; }
+.bim-architecture svg text { fill: #2A317A; font: 600 7px/1 var(--font-body, sans-serif); letter-spacing: .12em; }
+.bim-architecture__caption { color: var(--bim-indigo); font-weight: 600; }
+[dir="rtl"] .bim-hero__intro { margin-inline-start: 0; margin-inline-end: auto; text-align: right; }
+[dir="rtl"] .bim-hero__intro { max-width: 50%; }
+[dir="rtl"] .bim-hero__lede { margin-inline-start: 0; margin-inline-end: 0; }
+[dir="rtl"] .bim-architecture { right: auto; left: max(20px, calc((100vw - 1400px)/2)); }
+[dir="rtl"] .bim-architecture__photo { right: auto; left: 1%; }
+[dir="rtl"] .bim-architecture__note { margin-left: 0; margin-right: 28%; }
+[dir="rtl"] .bim-architecture__caption { margin-left: 0; margin-right: 18%; text-align: right; }
+[dir="rtl"] .bim-hero__explore { flex-direction: row-reverse; }
+@media (max-width: 1100px) {
+  [dir="rtl"] .bim-architecture { right: auto; left: -12px; width: 48vw; }
+  [dir="rtl"] .bim-hero__intro { max-width: 50%; }
+}
+@media (max-width: 700px) {
+  .bim-timeline::before, .bim-timeline::after { top: 37px; }
+  .bim-phase__node { width: 40px; height: 40px; flex-basis: 40px; }
+  [dir="rtl"] .bim-architecture { right: auto; left: -100px; }
+  [dir="rtl"] .bim-hero__intro { margin-inline-start: 0; }
+  [dir="rtl"] .bim-hero__intro { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bim-hero__intro, .bim-timeline-wrap, .bim-results { animation: none; }
+  .bim-timeline__item.is-active .bim-phase__node::before { animation: none; }
 }
